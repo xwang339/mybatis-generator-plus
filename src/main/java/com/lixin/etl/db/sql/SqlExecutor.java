@@ -1,19 +1,11 @@
-package com.lixin.etl.db.constructor;
+package com.lixin.etl.db.sql;
 
-import com.lixin.etl.db.model.DbType;
 import com.lixin.etl.db.model.ModeType;
-import com.lixin.etl.db.table.SqlModel;
-import com.lixin.etl.db.table.Table;
-import com.lixin.etl.db.util.CreateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.lixin.etl.db.table.TableSchema;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Description: sql管理器 可以植入业务 比如建表检查 执行器的植入
@@ -29,29 +21,29 @@ import java.util.Objects;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
-public class SqlManager extends SqlConstructor {
+public class SqlExecutor extends SqlBuilder {
 
     /**
      * 数据库连接对象
      */
     private DataSource dataSource;
 
-    public SqlManager(Table table, ModeType modeType) {
-        super(table, modeType);
+    public SqlExecutor(TableSchema tableSchema, ModeType modeType) {
+        super(tableSchema, modeType);
     }
 
-    public SqlManager(Table table, ModeType modeType, DataSource dataSource) {
-        super(table, modeType);
+    public SqlExecutor(TableSchema tableSchema, ModeType modeType, DataSource dataSource) {
+        super(tableSchema, modeType);
         this.dataSource = dataSource;
     }
 
-    public SqlManager(Table table) {
-        super(table);
+    public SqlExecutor(TableSchema tableSchema) {
+        super(tableSchema);
     }
 
 
-    public SqlManager(Table table, DataSource dataSource) {
-        super(table);
+    public SqlExecutor(TableSchema tableSchema, DataSource dataSource) {
+        super(tableSchema);
         this.dataSource = dataSource;
     }
 

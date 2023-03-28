@@ -18,7 +18,7 @@ import java.util.Set;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
-public abstract class Table {
+public abstract class TableSchema {
 
     /**
      * 关键字
@@ -52,11 +52,11 @@ public abstract class Table {
     private String engine;
     private String character;
 
-    public Table(List<SqlModel> models, String tableName) {
+    public TableSchema(List<SqlModel> models, String tableName) {
         this(models, tableName, "");
     }
 
-    public Table(List<SqlModel> models, String tableName, String tableDesc) {
+    public TableSchema(List<SqlModel> models, String tableName, String tableDesc) {
         Objects.requireNonNull(models, "models cannot be null");
         Objects.requireNonNull(tableName, "tableName cannot be null");
         //默认引擎

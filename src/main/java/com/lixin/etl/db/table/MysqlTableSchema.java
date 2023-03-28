@@ -6,8 +6,6 @@ import com.lixin.etl.db.model.MysqlColumn;
 import io.micrometer.common.util.StringUtils;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Description:
@@ -23,7 +21,7 @@ import java.util.Objects;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
-public class MysqlTable extends Table {
+public class MysqlTableSchema extends TableSchema {
 
 
 
@@ -46,11 +44,11 @@ public class MysqlTable extends Table {
      */
 
 
-    public MysqlTable(List<SqlModel> models, String tableName, String tableDoc) {
+    public MysqlTableSchema(List<SqlModel> models, String tableName, String tableDoc) {
         super(models, tableName, tableDoc);
     }
 
-    public MysqlTable(List<SqlModel> models, String tableName) {
+    public MysqlTableSchema(List<SqlModel> models, String tableName) {
         super(models, tableName);
     }
 

@@ -6,10 +6,10 @@ import com.lixin.etl.db.model.ModeType;
 import com.lixin.etl.db.provider.ModelSqlProvider;
 import com.lixin.etl.db.provider.SqlProvider;
 import com.lixin.etl.db.provider.TableOrFileProvider;
-import com.lixin.etl.db.table.MysqlTable;
-import com.lixin.etl.db.table.PostgreSqlTable;
+import com.lixin.etl.db.table.MysqlTableSchema;
+import com.lixin.etl.db.table.PostgreSqlTableSchema;
 import com.lixin.etl.db.table.SqlModel;
-import com.lixin.etl.db.table.Table;
+import com.lixin.etl.db.table.TableSchema;
 
 import java.util.List;
 
@@ -29,19 +29,19 @@ import java.util.List;
  */
 public class CreateUtils {
 
-    public static Table createTable(DbType dbType, List<SqlModel> sqlModels, String tableName, String doc) {
+    public static TableSchema createTable(DbType dbType, List<SqlModel> sqlModels, String tableName, String doc) {
         return switch (dbType) {
-            case MYSQL -> new MysqlTable(sqlModels, tableName,doc);
-            case POSTGRESQL -> new PostgreSqlTable(sqlModels, tableName,doc);
+            case MYSQL -> new MysqlTableSchema(sqlModels, tableName,doc);
+            case POSTGRESQL -> new PostgreSqlTableSchema(sqlModels, tableName,doc);
             default -> throw new RuntimeException("构造失败");
         };
     }
 
 
-    public static Table createTable(DbType dbType, List<SqlModel> sqlModels, String tableName) {
+    public static TableSchema createTable(DbType dbType, List<SqlModel> sqlModels, String tableName) {
         return switch (dbType) {
-            case MYSQL -> new MysqlTable(sqlModels, tableName);
-            case POSTGRESQL -> new PostgreSqlTable(sqlModels, tableName);
+            case MYSQL -> new MysqlTableSchema(sqlModels, tableName);
+            case POSTGRESQL -> new PostgreSqlTableSchema(sqlModels, tableName);
             default -> throw new RuntimeException("构造失败");
         };
     }

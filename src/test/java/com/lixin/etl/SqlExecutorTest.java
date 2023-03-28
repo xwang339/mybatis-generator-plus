@@ -1,6 +1,6 @@
 package com.lixin.etl;
 
-import com.lixin.etl.db.constructor.SqlManager;
+import com.lixin.etl.db.sql.SqlExecutor;
 import com.lixin.etl.db.model.DbType;
 import com.lixin.etl.db.model.MysqlColumn;
 import com.lixin.etl.db.table.SqlModel;
@@ -24,10 +24,10 @@ import java.util.List;
  * ------------------------------------------------------------------
  * 2023-03-24     张李鑫                     1.0         1.0 Version
  */
-public class SqlManagerTest {
+public class SqlExecutorTest {
 
     //MysqlColumn
-    public SqlManager getSqlmanager() {
+    public SqlExecutor getSqlmanager() {
         SqlModel sqlModel = new SqlModel("id", "id", MysqlColumn.VARCHAR.getValue(), 20, false, true, true);
         List<SqlModel> sqlModels = new ArrayList<>();
         sqlModels.add(sqlModel);
@@ -47,7 +47,7 @@ public class SqlManagerTest {
             SqlModel model = new SqlModel("TIMESTAMP" + i, "TIMESTAMP" + i, MysqlColumn.TIMESTAMP.getValue(), 0, i % 2 == 0, false, false);
             sqlModels.add(model);
         }
-        return new SqlManager(CreateUtils.createTable(DbType.MYSQL, sqlModels, "tableNameNoAuto", "测试表1111"));
+        return new SqlExecutor(CreateUtils.createTable(DbType.MYSQL, sqlModels, "tableNameNoAuto", "测试表1111"));
     }
 
     /**
@@ -56,7 +56,7 @@ public class SqlManagerTest {
     @Test
     public void getCreateSql() {
         long l = System.currentTimeMillis();
-        SqlManager sqlmanager = getSqlmanager();
+        SqlExecutor sqlmanager = getSqlmanager();
         String createTableSql = sqlmanager.buildCreateTableSql();
         System.out.println(createTableSql);
         System.out.println(System.currentTimeMillis() - l);
@@ -66,7 +66,7 @@ public class SqlManagerTest {
     @Test
     public void getCommentSql() {
         long l = System.currentTimeMillis();
-        SqlManager sqlmanager = getSqlmanager();
+        SqlExecutor sqlmanager = getSqlmanager();
         String createTableSql = sqlmanager.getCommentSql();
         System.out.println(createTableSql);
         System.out.println(System.currentTimeMillis() - l);

@@ -1,9 +1,9 @@
-package com.lixin.etl.db.constructor;
+package com.lixin.etl.db.sql;
 
 import com.lixin.etl.db.model.ModeType;
 import com.lixin.etl.db.provider.SqlProvider;
 import com.lixin.etl.db.table.SqlModel;
-import com.lixin.etl.db.table.Table;
+import com.lixin.etl.db.table.TableSchema;
 import com.lixin.etl.db.util.CreateUtils;
 
 /**
@@ -20,7 +20,7 @@ import com.lixin.etl.db.util.CreateUtils;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
-public class SqlConstructor {
+public class SqlBuilder {
 
     /**
      * 换行符号
@@ -31,7 +31,7 @@ public class SqlConstructor {
     /**
      * 表结构
      */
-    private Table table;
+    private TableSchema tableSchema;
     /**
      * sql构造器
      */
@@ -44,7 +44,7 @@ public class SqlConstructor {
      * @return
      */
     public String buildCreateTableSql() {
-        return this.table.buildCreateTableSql();
+        return this.tableSchema.buildCreateTableSql();
     }
 
     /**
@@ -53,7 +53,7 @@ public class SqlConstructor {
      * @return
      */
     public String getCommentSql() {
-        return this.table.getCommentColumnSql() + this.table.getCommentTableSql();
+        return this.tableSchema.getCommentColumnSql() + this.tableSchema.getCommentTableSql();
     }
 
     /**
@@ -62,7 +62,7 @@ public class SqlConstructor {
      * @return
      */
     public String getUpdateColumnDoc(SqlModel sqlModel) {
-        return this.table.getUpdateColumnDocSql(sqlModel);
+        return this.tableSchema.getUpdateColumnDocSql(sqlModel);
     }
 
     /**
@@ -71,7 +71,7 @@ public class SqlConstructor {
      * @return
      */
     public String getUpdateTableDoc(String tableName, String tableDoc) {
-        return this.table.updateOrInsertTableCommentSql(tableName, tableDoc);
+        return this.tableSchema.updateOrInsertTableCommentSql(tableName, tableDoc);
     }
 
     /**
@@ -83,14 +83,14 @@ public class SqlConstructor {
         return buildCreateTableSql() + lineFeed + getCommentSql();
     }
 
-    public SqlConstructor(Table table, ModeType modeType) {
-        this.table = table;
+    public SqlBuilder(TableSchema tableSchema, ModeType modeType) {
+        this.tableSchema = tableSchema;
         this.sqlProvider = CreateUtils.builderSqlProvider(modeType);
     }
 
 
-    public SqlConstructor(Table table) {
-        this.table = table;
+    public SqlBuilder(TableSchema tableSchema) {
+        this.tableSchema = tableSchema;
         this.sqlProvider = CreateUtils.builderSqlProvider(ModeType.BEAN);
     }
 
@@ -103,12 +103,12 @@ public class SqlConstructor {
     }
 
 
-    public Table getTable() {
-        return table;
+    public TableSchema getTable() {
+        return tableSchema;
     }
 
-    public void setTable(Table table) {
-        this.table = table;
+    public void setTable(TableSchema tableSchema) {
+        this.tableSchema = tableSchema;
     }
 
 }

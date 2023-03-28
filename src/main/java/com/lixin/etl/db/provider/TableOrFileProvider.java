@@ -1,7 +1,7 @@
 package com.lixin.etl.db.provider;
 
 import com.lixin.etl.db.table.SqlModel;
-import com.lixin.etl.db.table.Table;
+import com.lixin.etl.db.table.TableSchema;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public class TableOrFileProvider implements SqlProvider{
      * @param values
      * @return
      */
-    public List<SQL> builderInsertSql(List<List<String>> values, Table table) {
+    public List<SQL> builderInsertSql(List<List<String>> values, TableSchema tableSchema) {
         List<SQL> resSql = new ArrayList<>();
         //收集arr[i]所产生的所有sql返回
-        values.forEach(val -> resSql.add(builder(val, table)));
+        values.forEach(val -> resSql.add(builder(val, tableSchema)));
         return resSql;
     }
 
@@ -43,9 +43,9 @@ public class TableOrFileProvider implements SqlProvider{
      * @param val
      * @return
      */
-    public SQL builder(List<String> val, Table table) {
+    public SQL builder(List<String> val, TableSchema tableSchema) {
         //前缀构造
-        SQL sql = sqlPrefix(table);
+        SQL sql = sqlPrefix(tableSchema);
         String sqlStr = val.toString();
         sql.INTO_VALUES(sqlStr.substring(1, sqlStr.length() - 1));
         return sql;
@@ -81,10 +81,10 @@ public class TableOrFileProvider implements SqlProvider{
     /**
      * 构造前缀
      */
-    public SQL sqlPrefix(Table table) {
+    public SQL sqlPrefix(TableSchema tableSchema) {
         SQL sql = new SQL();
-        sql.INSERT_INTO(table.getTableName());
-        List<SqlModel> models = table.getModels();
+        sql.INSERT_INTO(tableSchema.getTableName());
+        List<SqlModel> models = tableSchema.getModels();
         models.forEach((model) -> sql.INTO_COLUMNS(model.getColumn()));
         return sql;
     }

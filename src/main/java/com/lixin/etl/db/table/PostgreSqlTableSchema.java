@@ -4,7 +4,6 @@ package com.lixin.etl.db.table;
 import com.lixin.etl.db.keyword.PostGreSqlKeyword;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Description:
@@ -20,7 +19,7 @@ import java.util.Objects;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
-public class PostgreSqlTable extends Table {
+public class PostgreSqlTableSchema extends TableSchema {
 
     /**
      * 前缀
@@ -50,7 +49,7 @@ public class PostgreSqlTable extends Table {
         return column.append("\n").append(comment).toString();
     }
 
-    public PostgreSqlTable(List<SqlModel> models, String tableName) {
+    public PostgreSqlTableSchema(List<SqlModel> models, String tableName) {
         super(models, tableName);
         this.setKeywords(PostGreSqlKeyword.toSet());
     }
@@ -81,7 +80,7 @@ public class PostgreSqlTable extends Table {
     }
 
 
-    public PostgreSqlTable(List<SqlModel> models, String tableName, String doc) {
+    public PostgreSqlTableSchema(List<SqlModel> models, String tableName, String doc) {
         super(models, tableName,doc);
         this.setKeywords(PostGreSqlKeyword.toSet());
     }
