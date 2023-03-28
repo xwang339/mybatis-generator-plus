@@ -6,6 +6,7 @@ import com.lixin.etl.db.model.MysqlColumn;
 import io.micrometer.common.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -59,7 +60,8 @@ public class MysqlTableSchema extends TableSchema {
      */
     @Override
     public String buildCreateTableSql() {
-        if (this.getModels().isEmpty()) {
+        List<SqlModel> models = this.getModels();
+        if (models.isEmpty()) {
             throw new RuntimeException("models isEmpty");
         }
 
@@ -68,8 +70,7 @@ public class MysqlTableSchema extends TableSchema {
         sql.append(CREATE_TABLE).append(String.format(FORMAT, this.getTableName())).append(LINE_FEED_HAS_NEXT);
 
         SqlModel primaryKey = this.getPrimaryKey();
-        //行数据拼接
-        getModels().forEach(model -> sql.append(buildColumnDefinition(model)));
+        sql.append(buildColumnDefinitions(models));
         //如果有主键拼接主键字符串，没有的话删除最后一个逗号
         if (primaryKey != null) {
             sql.append(String.format(PRIMARY_KEY_STR, getPrimaryKey().getColumn()));
@@ -81,6 +82,16 @@ public class MysqlTableSchema extends TableSchema {
         return sql.toString();
     }
 
+    /**
+     * 行数据拼接
+     * @param models {@link SqlModel }
+     * @return
+     */
+    private String buildColumnDefinitions(List<SqlModel> models) {
+        return models.stream()
+                .map(this::buildColumnDefinition)
+                .collect(Collectors.joining());
+    }
 
     /**
      * 构造行字段
