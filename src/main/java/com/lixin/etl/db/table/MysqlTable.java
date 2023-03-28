@@ -25,11 +25,21 @@ import java.util.Objects;
  */
 public class MysqlTable extends Table {
 
-    private final String format = " `%s` ";
-    private final String lineFeed = ",\n";
-    private final String timestampDefault = " DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ";
 
-    private final String primaryKeyStr = "  PRIMARY KEY (`%s`)";
+
+    private static final String FORMAT = " `%s` ";
+    private static final String LINE_FEED_HAS_NEXT = ",\n";
+    private static final String LINE_FEED_NOT_HAS_NEXT = "\n";
+    private static final String TIMESTAMP_DEFAULT = " DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ";
+    private static final String PRIMARY_KEY_STR = "  PRIMARY KEY (`%s`)";
+    private static final String MODIFY = "  modify ";
+    private static final String COMMENT = "  comment ";
+    private static final String ENDING = " ; ";
+    private static final String ALTER_TABLE = " alter table ";
+    private static final String CREATE_TABLE = " create table ";
+    private static final String AUTO_INCREMENT = " AUTO_INCREMENT ";
+    private static final String EMPTY_STRING = "";
+
 
     /**
      * mysqlColumnMap {@link MysqlColumn}
@@ -50,28 +60,26 @@ public class MysqlTable extends Table {
      * @return
      */
     @Override
-    public String getCreateTableSql() {
+    public String buildCreateTableSql() {
         if (this.getModels().isEmpty()) {
             throw new RuntimeException("models isEmpty");
         }
 
         StringBuilder sql = new StringBuilder();
         //前缀
-        sql.append(String.format("CREATE TABLE `%s` (\n", this.getTableName()));
+        sql.append(CREATE_TABLE).append(String.format(FORMAT, this.getTableName())).append(LINE_FEED_HAS_NEXT);
 
         SqlModel primaryKey = this.getPrimaryKey();
         //行数据拼接
-        for (SqlModel model : this.getModels()) {
-            sql.append(buildColumnDefinition(model));
-        }
+        getModels().forEach(model -> sql.append(buildColumnDefinition(model)));
         //如果有主键拼接主键字符串，没有的话删除最后一个逗号
         if (primaryKey != null) {
-            sql.append(String.format(primaryKeyStr, getPrimaryKey().getColumn()));
+            sql.append(String.format(PRIMARY_KEY_STR, getPrimaryKey().getColumn()));
         } else {
-            sql.delete(sql.length() - lineFeed.length(), sql.length() - 1);
+            sql.delete(sql.length() - LINE_FEED_HAS_NEXT.length(), sql.length() - 1);
         }
         //后缀
-        sql.append("\n").append(builderEnding());
+        sql.append(LINE_FEED_NOT_HAS_NEXT).append(buildEndingSql());
         return sql.toString();
     }
 
@@ -83,7 +91,7 @@ public class MysqlTable extends Table {
      */
     private StringBuilder buildColumnDefinition(SqlModel model) {
         StringBuilder sql = new StringBuilder();
-        sql.append(String.format(format, model.getColumn()));
+        sql.append(String.format(FORMAT, model.getColumn()));
         //获取当前模型的实际类型
         MysqlColumn mysqlColumn = model.getType();
 
@@ -92,13 +100,13 @@ public class MysqlTable extends Table {
         sql.append(model.isNull() ? ColumnStatus.ISNULL.getDescription() : ColumnStatus.NOTNULL.getDescription());
         //设置主键
         if (model.getPrimaryKey().isPrimaryKey()) {
-            sql.append(" AUTO_INCREMENT");
+            sql.append(AUTO_INCREMENT);
         }
         //设置时间默认值
-        if (model.getType().getValue()==MysqlColumn.TIMESTAMP.getValue()) {
-            sql.append(timestampDefault);
+        if (model.getType().getValue() == MysqlColumn.TIMESTAMP.getValue()) {
+            sql.append(TIMESTAMP_DEFAULT);
         }
-        return sql.append(lineFeed);
+        return sql.append(LINE_FEED_HAS_NEXT);
     }
 
     /**
@@ -114,8 +122,8 @@ public class MysqlTable extends Table {
         //是否有后缀 (?) :有的话需要替换长度 部分字段不需要设置长度
         String suffix = mysqlColumn.isHasSuffix() ? String.format(mysqlColumn.getSuffix(), model.getLength()) : mysqlColumn.getSuffix();
         //设置TIMESTAMP的默认值 如果是这个类型需要追加
-        suffix = mysqlColumn == MysqlColumn.TIMESTAMP ? suffix + timestampDefault : suffix;
-        return "alter table " + this.getTableName() + " modify  " + String.format(format, model.getColumn()) + " " + suffix + " comment '" + model.getComment() + "';";
+        suffix = mysqlColumn == MysqlColumn.TIMESTAMP ? suffix + TIMESTAMP_DEFAULT : suffix;
+        return ALTER_TABLE + this.getTableName() + MODIFY + String.format(FORMAT, model.getColumn()) + " " + suffix + " " + COMMENT + " '" + model.getComment() + "'" + ENDING + "";
     }
 
 
@@ -133,13 +141,13 @@ public class MysqlTable extends Table {
 
     @Override
     public String updateOrInsertTableCommentSql(String tableName, String tableDesc) {
-        return "alter table " + tableName + " comment '" + tableDesc + "';";
+        return ALTER_TABLE + tableName + " " + COMMENT + " '" + tableDesc + "'" + ENDING + "";
     }
 
     /**
      * 构造结束语句 ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
      */
-    public StringBuilder builderEnding() {
+    public StringBuilder buildEndingSql() {
         StringBuilder sql = new StringBuilder();
         sql.append(") ENGINE=").append(this.getEngine()).append(this.getCharacter());
         return sql;

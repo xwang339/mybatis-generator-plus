@@ -171,7 +171,7 @@ public abstract class Table {
      *
      * @return
      */
-    public abstract String getCreateTableSql();
+    public abstract String buildCreateTableSql();
 
     /**
      * 创建备注语句

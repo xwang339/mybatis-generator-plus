@@ -43,8 +43,8 @@ public class SqlConstructor {
      *
      * @return
      */
-    public String getCreateTableSql() {
-        return this.table.getCreateTableSql();
+    public String buildCreateTableSql() {
+        return this.table.buildCreateTableSql();
     }
 
     /**
@@ -80,7 +80,7 @@ public class SqlConstructor {
      * @return
      */
     public String getCreateTableAndCommentSql() {
-        return getCreateTableSql() + lineFeed + getCommentSql();
+        return buildCreateTableSql() + lineFeed + getCommentSql();
     }
 
     public SqlConstructor(Table table, ModeType modeType) {

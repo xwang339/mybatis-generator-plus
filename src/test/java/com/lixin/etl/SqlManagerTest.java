@@ -57,7 +57,7 @@ public class SqlManagerTest {
     public void getCreateSql() {
         long l = System.currentTimeMillis();
         SqlManager sqlmanager = getSqlmanager();
-        String createTableSql = sqlmanager.getCreateTableSql();
+        String createTableSql = sqlmanager.buildCreateTableSql();
         System.out.println(createTableSql);
         System.out.println(System.currentTimeMillis() - l);
     }

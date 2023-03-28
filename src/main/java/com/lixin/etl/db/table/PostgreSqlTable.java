@@ -56,7 +56,7 @@ public class PostgreSqlTable extends Table {
     }
 
     @Override
-    public String getCreateTableSql() {
+    public String buildCreateTableSql() {
         return null;
     }
 

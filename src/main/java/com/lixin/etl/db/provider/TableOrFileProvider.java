@@ -6,7 +6,6 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Description:
@@ -89,6 +88,4 @@ public class TableOrFileProvider implements SqlProvider{
         models.forEach((model) -> sql.INTO_COLUMNS(model.getColumn()));
         return sql;
     }
-
-
 }
