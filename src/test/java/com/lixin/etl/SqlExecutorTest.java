@@ -1,18 +1,19 @@
 package com.lixin.etl;
 
-import com.lixin.etl.db.model.ModeType;
-import com.lixin.etl.db.provider.MybatisSqlProvider;
-import com.lixin.etl.db.provider.SqlProvider;
-import com.lixin.etl.db.sql.SqlExecutor;
 import com.lixin.etl.db.model.DbType;
+import com.lixin.etl.db.model.ModeType;
 import com.lixin.etl.db.model.MysqlColumn;
-import com.lixin.etl.db.table.MysqlTableSchema;
-import com.lixin.etl.db.table.PostgreSqlTableSchema;
+import com.lixin.etl.db.provider.MybatisSqlProvider;
+import com.lixin.etl.db.sql.SqlExecutor;
 import com.lixin.etl.db.table.SqlModel;
 import com.lixin.etl.db.util.CreateUtils;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Description:
@@ -80,7 +81,7 @@ public class SqlExecutorTest {
         }
         List<String> sqls = new ArrayList<>();
         datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTable(), map)));
-        sqls.forEach(sql -> System.out.println(sql + ";"));
+        System.out.println(StringUtils.join(sqls, ';'));
     }
 
     @Test
