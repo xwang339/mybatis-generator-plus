@@ -21,13 +21,13 @@ import java.text.SimpleDateFormat;
  */
 public interface  SqlProvider {
 
-    public final String lineFeed = " \n";
-
-    public final String ending = ";";
+    /**
+     * 获取值的方法
+     * @param value 值
+     * @param type 数据类型
+     * @return
+     */
     default String getValueString(Object value, byte type) {
-        if (value == null) {
-            return "null";
-        }
         if (type == (MysqlColumn.CHAR.getValue()) || type == MysqlColumn.VARCHAR.getValue()) {
             return "'" + value + "'";
         } else if (type == MysqlColumn.DATETIME.getValue() || type == MysqlColumn.TIMESTAMP.getValue()) {

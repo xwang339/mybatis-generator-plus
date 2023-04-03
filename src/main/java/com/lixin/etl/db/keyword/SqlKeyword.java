@@ -16,7 +16,8 @@ package com.lixin.etl.db.keyword;
  */
 public enum SqlKeyword {
     SET("SET"),
-    InsertKeyword(" INSERT INTO "),
+    INSERT_KEYWORD(" INSERT INTO "),
+    UPDATE(" update "),
     VALUES("VALUES ");
 
     private final String description;

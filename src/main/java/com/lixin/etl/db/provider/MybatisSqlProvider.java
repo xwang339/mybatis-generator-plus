@@ -34,14 +34,14 @@ public class MybatisSqlProvider implements SqlProvider {
      */
     public String getInsertStatement(TableSchema tableSchema, Map<String, Object> data) {
         StringBuilder sql = new StringBuilder();
-        sql.append(SqlKeyword.InsertKeyword.getDescription()).append(tableSchema.getTableName()).append(PARENTHESES_PRE);
+        sql.append(SqlKeyword.INSERT_KEYWORD.getDescription()).append(tableSchema.getTableName()).append(PARENTHESES_PRE);
 
         StringBuilder values = new StringBuilder();
         values.append(SqlKeyword.VALUES.getDescription()).append(PARENTHESES_PRE);
 
         tableSchema.getModels().forEach(model -> {
-            //如果是自增主键，且值为空，则不插入
-            if (model.getPrimaryKey().isAutoIncrement()&data.get(model.getColumn())==null) {
+            //如果是data里面不包含这个字段的值，那么就不需要插入
+            if (data.get(model.getColumn())==null) {
                 return;
             }
             sql.append(model.getColumn()).append(comma);
@@ -52,6 +52,17 @@ public class MybatisSqlProvider implements SqlProvider {
         sql.append(PARENTHESES_SUFFIX).append(values).append(PARENTHESES_SUFFIX);
         return sql.toString();
     }
-
+    /**
+     * 获取insert语句
+     *
+     * @param tableSchema 表对象
+     * @param data        数据对象
+     * @return
+     */
+    public String getUpdateStatement(TableSchema tableSchema, Map<String, Object> data) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(SqlKeyword.INSERT_KEYWORD.getDescription()).append(tableSchema.getTableName()).append(PARENTHESES_PRE);
+        return sql.toString();
+    }
 
 }
