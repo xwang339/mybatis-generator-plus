@@ -21,7 +21,7 @@ import java.util.List;
  * ------------------------------------------------------------------
  * 2023-03-23     张李鑫                     1.0         1.0 Version
  */
-public class TableOrFileProvider implements SqlProvider{
+public class TableOrFileProvider extends SqlProvider{
     /**
      * 构造List sql insert语句
      * 由原生的 statement.executeUpdate(sql);来执行这句sql
@@ -30,20 +30,19 @@ public class TableOrFileProvider implements SqlProvider{
      * @param values
      * @return
      */
-    public List<SQL> builderInsertSql(List<List<String>> values, TableSchema tableSchema) {
+    public List<SQL> insertSelectiveBatch(List<List<String>> values, TableSchema tableSchema) {
         List<SQL> resSql = new ArrayList<>();
         //收集arr[i]所产生的所有sql返回
-        values.forEach(val -> resSql.add(builder(val, tableSchema)));
+        values.forEach(val -> resSql.add(insertSelective(val, tableSchema)));
         return resSql;
     }
-
     /**
      * 通过行数据构造当前行的insert语句
      *
      * @param val
      * @return
      */
-    public SQL builder(List<String> val, TableSchema tableSchema) {
+    public SQL insertSelective(List<String> val, TableSchema tableSchema) {
         //前缀构造
         SQL sql = sqlPrefix(tableSchema);
         String sqlStr = val.toString();
@@ -61,7 +60,7 @@ public class TableOrFileProvider implements SqlProvider{
      */
     public String sqlList2Str(List<SQL> lists) {
         StringBuilder sb = new StringBuilder();
-        lists.forEach((sql) -> sb.append(sql).append(ending + lineFeed));
+//        lists.forEach((sql) -> sb.append(sql).append(ending + lineFeed));
         return sb.toString();
     }
 
@@ -87,5 +86,10 @@ public class TableOrFileProvider implements SqlProvider{
         List<SqlModel> models = tableSchema.getModels();
         models.forEach((model) -> sql.INTO_COLUMNS(model.getColumn()));
         return sql;
+    }
+
+    @Override
+    String insertSelective(TableSchema sqlModel) {
+        return null;
     }
 }

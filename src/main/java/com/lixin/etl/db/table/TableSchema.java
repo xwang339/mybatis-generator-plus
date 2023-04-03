@@ -1,5 +1,6 @@
 package com.lixin.etl.db.table;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -52,6 +53,8 @@ public abstract class TableSchema {
     private String engine;
     private String character;
 
+    private HashSet<String> modelSet;
+
     public TableSchema(List<SqlModel> models, String tableName) {
         this(models, tableName, "");
     }
@@ -65,7 +68,11 @@ public abstract class TableSchema {
         this.character = "DEFAULT CHARSET=utf8;";
         this.isMerge = false;
         this.models = models;
+        this.tableDesc = tableDesc;
         this.tableName = tableName;
+        this.modelSet = new HashSet<>();
+        //设置字段名称
+        this.models.forEach(model -> modelSet.add(model.getColumn()));
         //设置主键
         for (SqlModel model : models) {
             if (model.getPrimaryKey().isPrimaryKey()) {
@@ -73,6 +80,14 @@ public abstract class TableSchema {
                 return;
             }
         }
+    }
+
+    public HashSet<String> getModelSet() {
+        return modelSet;
+    }
+
+    public void setModelSet(HashSet<String> modelSet) {
+        this.modelSet = modelSet;
     }
 
     public String getTableName() {

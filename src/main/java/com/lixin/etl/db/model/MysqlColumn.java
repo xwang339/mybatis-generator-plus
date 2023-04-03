@@ -22,13 +22,16 @@ public enum MysqlColumn {
     TEXT("text(%s)", (byte) 1, true),
     INTEGER("int(%s)", (byte) 2, true),
     TIMESTAMP("timestamp", (byte) 3, false),
+    DATETIME("datetime", (byte) 6, false),
+    CHAR("CHAR(%s)", (byte) 5, true),
     VARCHAR("VARCHAR(%s)", (byte) 4, true);
+
 
     private final String suffix;
     private final byte value;
     private final boolean hasSuffix;
 
-    public static final Map<Byte,MysqlColumn>  enumMap=toMap();
+    public static final Map<Byte, MysqlColumn> enumMap = toMap();
 
     private MysqlColumn(String suffix, byte value, boolean hasSuffix) {
         this.suffix = suffix;
@@ -36,8 +39,8 @@ public enum MysqlColumn {
         this.hasSuffix = hasSuffix;
     }
 
-    private static Map<Byte,MysqlColumn> toMap() {
-        Map<Byte,MysqlColumn> statusMap = new LinkedHashMap<Byte,MysqlColumn>();
+    private static Map<Byte, MysqlColumn> toMap() {
+        Map<Byte, MysqlColumn> statusMap = new LinkedHashMap<Byte, MysqlColumn>();
         for (MysqlColumn tmp : MysqlColumn.values()) {
             statusMap.put(tmp.value, tmp);
         }

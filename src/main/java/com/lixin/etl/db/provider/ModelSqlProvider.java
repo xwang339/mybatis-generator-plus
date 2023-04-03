@@ -1,7 +1,11 @@
 package com.lixin.etl.db.provider;
 
 import com.lixin.etl.db.table.SqlModel;
+import com.lixin.etl.db.table.TableSchema;
+import org.apache.ibatis.jdbc.SQL;
+import org.springframework.util.ObjectUtils;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,7 +22,21 @@ import java.util.Objects;
  * ------------------------------------------------------------------
  * 2023-03-24     张李鑫                     1.0         1.0 Version
  */
-public class ModelSqlProvider implements SqlProvider{
+public class ModelSqlProvider extends SqlProvider {
+
+    @Override
+    public String insertSelective(TableSchema tableSchema) {
+//        Objects.requireNonNull(tableSchema, "tableSchema cannot be null");
+//        List<SqlModel> models = tableSchema.getModels();
+//        SQL sql = new SQL();
+//        models.forEach(model -> {
+//            if (!ObjectUtils.isEmpty(model.getInsertValue())) {
+//            }
+//        });
+        return "";
+    }
 
 
+
+//    private String
 }

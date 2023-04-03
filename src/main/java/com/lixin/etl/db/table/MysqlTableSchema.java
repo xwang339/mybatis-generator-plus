@@ -1,6 +1,7 @@
 package com.lixin.etl.db.table;
 
 
+import com.lixin.etl.db.keyword.MysqlKeyword;
 import com.lixin.etl.db.model.ColumnStatus;
 import com.lixin.etl.db.model.MysqlColumn;
 import io.micrometer.common.util.StringUtils;
@@ -47,6 +48,8 @@ public class MysqlTableSchema extends TableSchema {
 
     public MysqlTableSchema(List<SqlModel> models, String tableName, String tableDoc) {
         super(models, tableName, tableDoc);
+        //设置关键字
+        this.setKeywords(MysqlKeyword.toSet());
     }
 
     public MysqlTableSchema(List<SqlModel> models, String tableName) {

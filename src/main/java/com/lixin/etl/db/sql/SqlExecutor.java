@@ -37,7 +37,6 @@ public class SqlExecutor extends SqlBuilder {
         super(tableSchema, modeType);
         this.dataSource = dataSource;
     }
-
     public SqlExecutor(TableSchema tableSchema) {
         super(tableSchema);
     }

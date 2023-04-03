@@ -18,7 +18,7 @@ import java.util.Map;
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
 public enum ModeType {
-    EXCEL("excel", (byte) 0), TABLE("table", (byte) 1), BEAN("table", (byte) 2);
+    EXCEL("excel", (byte) 0), TABLE("table", (byte) 1), BEAN("bean", (byte) 2);
 
     private final String description;
     private final byte value;

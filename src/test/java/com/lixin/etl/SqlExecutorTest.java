@@ -1,5 +1,7 @@
 package com.lixin.etl;
 
+import com.lixin.etl.db.model.ModeType;
+import com.lixin.etl.db.provider.SqlProvider;
 import com.lixin.etl.db.sql.SqlExecutor;
 import com.lixin.etl.db.model.DbType;
 import com.lixin.etl.db.model.MysqlColumn;
@@ -47,8 +49,18 @@ public class SqlExecutorTest {
             SqlModel model = new SqlModel("TIMESTAMP" + i, "TIMESTAMP" + i, MysqlColumn.TIMESTAMP.getValue(), 0, i % 2 == 0, false, false);
             sqlModels.add(model);
         }
-        return new SqlExecutor(CreateUtils.createTable(DbType.MYSQL, sqlModels, "tableNameNoAuto", "测试表1111"));
+        return new SqlExecutor(CreateUtils.createTable(DbType.MYSQL, sqlModels, "tableNameNoAuto", "测试表1111"), ModeType.EXCEL);
     }
+
+
+    @Test
+    public void getCreateTableSql() {
+        long l = System.currentTimeMillis();
+        SqlExecutor sqlManager = getSqlmanager();
+        SqlProvider sqlProvider = sqlManager.getSqlProvider();
+    }
+
+
 
     /**
      *
@@ -56,8 +68,8 @@ public class SqlExecutorTest {
     @Test
     public void getCreateSql() {
         long l = System.currentTimeMillis();
-        SqlExecutor sqlmanager = getSqlmanager();
-        String createTableSql = sqlmanager.buildCreateTableSql();
+        SqlExecutor sqlManager = getSqlmanager();
+        String createTableSql = sqlManager.buildCreateTableSql();
         System.out.println(createTableSql);
         System.out.println(System.currentTimeMillis() - l);
     }
@@ -66,8 +78,8 @@ public class SqlExecutorTest {
     @Test
     public void getCommentSql() {
         long l = System.currentTimeMillis();
-        SqlExecutor sqlmanager = getSqlmanager();
-        String createTableSql = sqlmanager.getCommentSql();
+        SqlExecutor sqlManager = getSqlmanager();
+        String createTableSql = sqlManager.getCommentSql();
         System.out.println(createTableSql);
         System.out.println(System.currentTimeMillis() - l);
     }

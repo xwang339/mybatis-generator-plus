@@ -22,7 +22,7 @@ import java.util.List;
 public class SqlModel {
 
     /**
-     * 字段
+     * 字段名称
      */
     private String column;
 
