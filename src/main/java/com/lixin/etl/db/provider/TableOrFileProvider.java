@@ -1,13 +1,8 @@
 package com.lixin.etl.db.provider;
 
-import com.lixin.etl.db.model.MysqlColumn;
 import com.lixin.etl.db.table.ColumnWithValue;
-import com.lixin.etl.db.table.SqlModel;
 import com.lixin.etl.db.table.TableSchema;
-import org.apache.ibatis.jdbc.SQL;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

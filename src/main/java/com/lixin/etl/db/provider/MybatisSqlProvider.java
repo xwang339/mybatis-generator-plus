@@ -1,13 +1,8 @@
 package com.lixin.etl.db.provider;
 
-import com.lixin.etl.db.table.ColumnWithValue;
 import com.lixin.etl.db.table.TableSchema;
-import org.apache.ibatis.jdbc.SQL;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Description: 基于mybatis 实现的sql提供者

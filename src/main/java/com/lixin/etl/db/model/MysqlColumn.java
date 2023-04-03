@@ -1,8 +1,7 @@
 package com.lixin.etl.db.model;
 
-import com.lixin.etl.db.keyword.PostGreSqlKeyword;
-
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Description:
