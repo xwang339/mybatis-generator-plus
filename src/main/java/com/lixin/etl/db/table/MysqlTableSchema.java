@@ -27,9 +27,10 @@ public class MysqlTableSchema extends TableSchema {
 
 
 
-    private static final String FORMAT = " `%s` ";
+    private static final String FORMAT = " `%s`";
     private static final String LINE_FEED_HAS_NEXT = ",\n";
-    private static final String LINE_FEED_NOT_HAS_NEXT = "\n";
+    private static final String LINE_FEED = "\n";
+    private static final String PARENTHESES_PRE = " ( ";
     private static final String TIMESTAMP_DEFAULT = " DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ";
     private static final String PRIMARY_KEY_STR = "  PRIMARY KEY (`%s`)";
     private static final String MODIFY = "  modify ";
@@ -70,7 +71,7 @@ public class MysqlTableSchema extends TableSchema {
 
         StringBuilder sql = new StringBuilder();
         //前缀
-        sql.append(CREATE_TABLE).append(String.format(FORMAT, this.getTableName())).append(LINE_FEED_HAS_NEXT);
+        sql.append(CREATE_TABLE).append(String.format(FORMAT, this.getTableName())).append(PARENTHESES_PRE).append(LINE_FEED);
 
         SqlModel primaryKey = this.getPrimaryKey();
         sql.append(buildColumnDefinitions(models));
@@ -81,7 +82,7 @@ public class MysqlTableSchema extends TableSchema {
             sql.delete(sql.length() - LINE_FEED_HAS_NEXT.length(), sql.length() - 1);
         }
         //后缀
-        sql.append(LINE_FEED_NOT_HAS_NEXT).append(buildEndingSql());
+        sql.append(LINE_FEED).append(buildEndingSql());
         return sql.toString();
     }
 

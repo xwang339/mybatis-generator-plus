@@ -1,16 +1,18 @@
 package com.lixin.etl;
 
 import com.lixin.etl.db.model.ModeType;
+import com.lixin.etl.db.provider.MybatisSqlProvider;
 import com.lixin.etl.db.provider.SqlProvider;
 import com.lixin.etl.db.sql.SqlExecutor;
 import com.lixin.etl.db.model.DbType;
 import com.lixin.etl.db.model.MysqlColumn;
+import com.lixin.etl.db.table.MysqlTableSchema;
+import com.lixin.etl.db.table.PostgreSqlTableSchema;
 import com.lixin.etl.db.table.SqlModel;
 import com.lixin.etl.db.util.CreateUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:
@@ -30,7 +32,7 @@ public class SqlExecutorTest {
 
     //MysqlColumn
     public SqlExecutor getSqlmanager() {
-        SqlModel sqlModel = new SqlModel("id", "id", MysqlColumn.VARCHAR.getValue(), 20, false, true, true);
+        SqlModel sqlModel = new SqlModel("id", "id", MysqlColumn.INTEGER.getValue(), 20, false, true, true);
         List<SqlModel> sqlModels = new ArrayList<>();
         sqlModels.add(sqlModel);
         for (int i = 0; i < 10; i++) {
@@ -55,11 +57,35 @@ public class SqlExecutorTest {
 
     @Test
     public void getCreateTableSql() {
-        long l = System.currentTimeMillis();
         SqlExecutor sqlManager = getSqlmanager();
-        SqlProvider sqlProvider = sqlManager.getSqlProvider();
+        long l = System.currentTimeMillis();
+        MybatisSqlProvider mybatisSqlProvider = new MybatisSqlProvider();
+
+        ArrayList<HashMap<String, Object>> datas = new ArrayList<>();
+
+        List<SqlModel> models = sqlManager.getTable().getModels();
+        for (int i = 0; i < 10; i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            for (SqlModel model : models) {
+                if (model.getPrimaryKey().isPrimaryKey()) {
+                    continue;
+                }
+                if (model.getType().getValue() == MysqlColumn.TIMESTAMP.getValue()) {
+                    map.put(model.getColumn(), new Date());
+                    continue;
+                }
+                map.put(model.getColumn(), i + 1);
+            }
+            datas.add(map);
+        }
+        List<String> sqls = new ArrayList<>();
+        datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTable(), map)));
+        sqls.forEach(sql -> System.out.println(sql + ";"));
     }
 
+    @Test
+    public void executeSql() {
+    }
 
 
     /**

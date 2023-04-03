@@ -3,7 +3,7 @@ package com.lixin.etl.db.util;
 
 import com.lixin.etl.db.model.DbType;
 import com.lixin.etl.db.model.ModeType;
-import com.lixin.etl.db.provider.ModelSqlProvider;
+import com.lixin.etl.db.provider.MybatisSqlProvider;
 import com.lixin.etl.db.provider.SqlProvider;
 import com.lixin.etl.db.provider.TableOrFileProvider;
 import com.lixin.etl.db.table.MysqlTableSchema;
@@ -50,7 +50,7 @@ public class CreateUtils {
     public static SqlProvider builderSqlProvider(ModeType modeType) {
         return switch (modeType) {
             case EXCEL, TABLE -> new TableOrFileProvider();
-            case BEAN -> new ModelSqlProvider();
+            case BEAN -> new MybatisSqlProvider();
             default -> throw new RuntimeException("构造失败");
         };
     }
