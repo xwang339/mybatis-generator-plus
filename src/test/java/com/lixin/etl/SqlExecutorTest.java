@@ -81,7 +81,7 @@ public class SqlExecutorTest {
         }
         List<String> sqls = new ArrayList<>();
         datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTable(), map)));
-        System.out.println(StringUtils.join(sqls, ';'));
+        sqls.forEach(sql -> System.out.println(sql + ";"));
     }
 
     @Test
