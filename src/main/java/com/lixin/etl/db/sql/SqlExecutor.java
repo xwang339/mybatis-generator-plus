@@ -2,6 +2,7 @@ package com.lixin.etl.db.sql;
 
 import com.lixin.etl.db.model.ModeType;
 import com.lixin.etl.db.table.TableSchema;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
