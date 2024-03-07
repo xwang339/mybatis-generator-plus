@@ -1,6 +1,5 @@
 package org.mybatis.mybatisGenerator.internal;
 
-import com.lixin.utils.constants.Constants;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
