@@ -1,13 +1,12 @@
 package com.lixin.etl;
 
-import com.lixin.etl.db.model.DbType;
-import com.lixin.etl.db.model.ModeType;
-import com.lixin.etl.db.model.MysqlColumn;
-import com.lixin.etl.db.provider.MybatisSqlProvider;
-import com.lixin.etl.db.sql.SqlExecutor;
-import com.lixin.etl.db.table.SqlModel;
-import com.lixin.etl.db.util.CreateUtils;
-import org.apache.tomcat.util.buf.StringUtils;
+import com.lixin.db.model.DbType;
+import com.lixin.db.model.ModeType;
+import com.lixin.db.model.MysqlColumn;
+import com.lixin.db.provider.MybatisSqlProvider;
+import com.lixin.db.sql.SqlExecutor;
+import com.lixin.db.table.SqlModel;
+import com.lixin.db.util.CreateUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
