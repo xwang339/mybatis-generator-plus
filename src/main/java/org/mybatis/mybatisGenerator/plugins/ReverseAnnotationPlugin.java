@@ -5,6 +5,8 @@ import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.JDBCConnectionConfiguration;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
+import org.mybatis.reverseGenerator.annotation.ColumnGeneratorDoc;
+import org.mybatis.reverseGenerator.annotation.TableGeneratorDoc;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -18,14 +20,14 @@ import java.util.List;
  * todo:索引信息生成还没做
  */
 public class ReverseAnnotationPlugin extends PluginAdapter {
-    private final FullyQualifiedJavaType TableGeneratorDoc;
-    private final FullyQualifiedJavaType ColumnGeneratorDoc;
+    private final FullyQualifiedJavaType TableGeneratorDocAnno;
+    private final FullyQualifiedJavaType ColumnGeneratorDocAnno;
 
     private DatabaseMetaData databaseMetaData;
 
     public ReverseAnnotationPlugin() {
-        TableGeneratorDoc = new FullyQualifiedJavaType("org.mybatis.mybatisGenerator.annotation.TableGeneratorDoc");
-        ColumnGeneratorDoc = new FullyQualifiedJavaType("org.mybatis.mybatisGenerator.annotation.ColumnGeneratorDoc"); //$NON-NLS-1$
+        TableGeneratorDocAnno = new FullyQualifiedJavaType(TableGeneratorDoc.class.getName());
+        ColumnGeneratorDocAnno = new FullyQualifiedJavaType(ColumnGeneratorDoc.class.getName()); //$NON-NLS-1$
     }
 
 
@@ -43,7 +45,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
      */
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String annotation = "@TableGeneratorDoc(remark = \"%s\",name = \"%s\")";
-        topLevelClass.addImportedType(TableGeneratorDoc);
+        topLevelClass.addImportedType(TableGeneratorDocAnno);
         topLevelClass.addJavaDocLine(String.format(annotation, introspectedTable.getRemarks(), introspectedTable.getFullyQualifiedTable()));
         return true;
     }
@@ -52,7 +54,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
     public boolean modelRecordWithBLOBsClassGenerated(
             TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String annotation = "@TableGeneratorDoc(remark = \"%s\",name = \"%s\")";
-        topLevelClass.addImportedType(TableGeneratorDoc);
+        topLevelClass.addImportedType(TableGeneratorDocAnno);
         topLevelClass.addJavaDocLine(String.format(annotation, introspectedTable.getRemarks(), introspectedTable.getFullyQualifiedTable()));
         return true;
     }
@@ -74,7 +76,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
         }
         format += ")";
         field.addJavaDocLine(format);
-        topLevelClass.addImportedType(ColumnGeneratorDoc);
+        topLevelClass.addImportedType(ColumnGeneratorDocAnno);
         return true;
     }
 

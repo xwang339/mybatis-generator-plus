@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 
-@Log4j2
 public class SqlExecutor extends SqlBuilder {
 
     /**

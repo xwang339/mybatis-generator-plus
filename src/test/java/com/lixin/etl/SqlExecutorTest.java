@@ -63,7 +63,7 @@ public class SqlExecutorTest {
 
         ArrayList<HashMap<String, Object>> datas = new ArrayList<>();
 
-        List<SqlModel> models = sqlManager.getTable().getModels();
+        List<SqlModel> models = sqlManager.getTableSchema().getModels();
         for (int i = 0; i < 10; i++) {
             HashMap<String, Object> map = new HashMap<>();
             for (SqlModel model : models) {
@@ -79,7 +79,7 @@ public class SqlExecutorTest {
             datas.add(map);
         }
         List<String> sqls = new ArrayList<>();
-        datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTable(), map)));
+        datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTableSchema(), map)));
         sqls.forEach(sql -> System.out.println(sql + ";"));
     }
 

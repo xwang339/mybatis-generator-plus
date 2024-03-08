@@ -31,7 +31,6 @@ public class ArchetypeGenerator extends DefaultCommentGenerator {
      * If suppressAllComments is true, this option is ignored.
      */
     private boolean addRemarkComments;
-    private boolean useLombok;
 
 
     public ArchetypeGenerator() {
@@ -173,15 +172,6 @@ public class ArchetypeGenerator extends DefaultCommentGenerator {
         super.addClassComment(innerClass, introspectedTable);
     }
 
-    @Override
-    public void addGetterComment(Method method,
-                                 IntrospectedTable introspectedTable,
-                                 IntrospectedColumn introspectedColumn) {
-        if (suppressAllComments || useLombok) {
-            return;
-        }
-        super.addGetterComment(method, introspectedTable, introspectedColumn);
-    }
 
 
 }
