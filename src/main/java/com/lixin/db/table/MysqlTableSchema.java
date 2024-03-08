@@ -10,20 +10,6 @@ import com.lixin.db.model.MysqlColumn;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Description:
- * Copyright:   Copyright (c)2023
- * Company:     sci
- *
- * @author: 张李鑫
- * @version: 1.0
- * Create at:   2023-03-16 16:38:53
- * <p>
- * Modification History:
- * Date         Author      Version     Description
- * ------------------------------------------------------------------
- * 2023-03-16     张李鑫                     1.0         1.0 Version
- */
 public class MysqlTableSchema extends TableSchema {
 
     private static final String FORMAT = " `%s`";
@@ -149,10 +135,15 @@ public class MysqlTableSchema extends TableSchema {
         return builderCommentLine(model);
     }
 
+    @Override
+    public String getIndexSql() {
+        return null;
+    }
+
 
     @Override
     public String updateOrInsertTableCommentSql(String tableName, String tableDesc) {
-        return ALTER_TABLE + tableName + " " + COMMENT + " '" + tableDesc + "'" + ENDING + "";
+        return ALTER_TABLE + tableName + " " + COMMENT + " '" + tableDesc + "'" + ENDING;
     }
 
     /**

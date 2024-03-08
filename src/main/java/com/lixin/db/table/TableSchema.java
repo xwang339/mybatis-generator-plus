@@ -1,5 +1,9 @@
 package com.lixin.db.table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +23,9 @@ import java.util.Set;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
+@Data
+@EqualsAndHashCode
+@Accessors(chain = true)
 public abstract class TableSchema {
 
     /**
@@ -51,9 +58,12 @@ public abstract class TableSchema {
     private Boolean isMerge;
 
     private String engine;
+
     private String character;
 
     private HashSet<String> modelSet;
+
+    private List<IndexModel>indexModels;
 
     public TableSchema(List<SqlModel> models, String tableName) {
         this(models, tableName, "");
@@ -82,23 +92,6 @@ public abstract class TableSchema {
         }
     }
 
-
-    public HashSet<String> getModelSet() {
-        return modelSet;
-    }
-
-    public void setModelSet(HashSet<String> modelSet) {
-        this.modelSet = modelSet;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
     /**
      * 获取当前表的模型 如果没有合并过 先合并在返回
      *
@@ -117,68 +110,6 @@ public abstract class TableSchema {
     public void mergeModel() {
         models.addAll(extraModel);
         isMerge = true;
-    }
-
-    public String getTableDesc() {
-        return tableDesc;
-    }
-
-    public void setTableDesc(String tableDesc) {
-        this.tableDesc = tableDesc;
-    }
-
-    public void setModels(List<SqlModel> models) {
-        isMerge = false;
-        this.models = models;
-    }
-
-    public Set<String> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(Set<String> keywords) {
-        this.keywords = keywords;
-    }
-
-    public SqlModel getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public List<SqlModel> getExtraModel() {
-        return extraModel;
-    }
-
-    public void setExtraModel(List<SqlModel> extraModel) {
-        isMerge = false;
-        this.extraModel = extraModel;
-    }
-
-    public Boolean getMerge() {
-        return isMerge;
-    }
-
-    public void setMerge(Boolean merge) {
-        isMerge = merge;
-    }
-
-    public String getEngine() {
-        return engine;
-    }
-
-    public void setEngine(String engine) {
-        this.engine = engine;
-    }
-
-    public String getCharacter() {
-        return character;
-    }
-
-    public void setCharacter(String character) {
-        this.character = character;
-    }
-
-    public void setPrimaryKey(SqlModel primaryKey) {
-        this.primaryKey = primaryKey;
     }
 
 
@@ -213,4 +144,5 @@ public abstract class TableSchema {
      */
     public abstract String getUpdateColumnDocSql(SqlModel sqlModel);
 
+    public abstract String getIndexSql();
 }

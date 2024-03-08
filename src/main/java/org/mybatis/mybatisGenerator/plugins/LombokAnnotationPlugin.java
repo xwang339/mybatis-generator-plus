@@ -15,6 +15,7 @@ import java.util.List;
  * lombok 注解生成
  * 在类上生成注解
  * 取消getAndSet的函数生成
+ * todo:通过配置的方式进行注解的自定义生成 目前暂时就提供自己用的数据
  */
 
 public class LombokAnnotationPlugin extends PluginAdapter {
@@ -94,7 +95,6 @@ public class LombokAnnotationPlugin extends PluginAdapter {
                                               TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
                                               IntrospectedTable introspectedTable,
                                               Plugin.ModelClassType modelClassType) {
-
         return false;
     }
 }

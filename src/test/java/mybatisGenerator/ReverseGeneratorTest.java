@@ -5,11 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
-import org.mybatis.generator.exception.ShellException;
-import org.mybatis.generator.internal.DefaultShellCallback;
-import org.mybatis.mybatisGenerator.ReverseGenerator;
+import org.mybatis.reverseGenerator.ReverseGenerator;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class ReverseGeneratorTest {
 
         try {
             ReverseGenerator myBatisGenerator = new ReverseGenerator(config);
-            List<String> reverse = myBatisGenerator.reverse(true, DbType.MYSQL);
+            List<String> reverse = myBatisGenerator.reverse(true, DbType.MYSQL,false);
             reverse.forEach(System.out::println);
             if (!warnings.isEmpty()) {
                 for (String warning : warnings) {

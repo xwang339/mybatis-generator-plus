@@ -1,5 +1,7 @@
 package com.lixin.db.model;
 
+import lombok.Getter;
+
 /**
  * Description:
  * Copyright:   Copyright (c)2023
@@ -14,6 +16,7 @@ package com.lixin.db.model;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
+@Getter
 public enum DbType {
     MYSQL("mysql",(byte)1),
     POSTGRESQL("postgresql",(byte)0);
@@ -25,11 +28,5 @@ public enum DbType {
         this.description = description;
         this.value = value;
     }
-    public String getDescription() {
-        return description;
-    }
 
-    public byte getValue() {
-        return value;
-    }
 }

@@ -1,4 +1,4 @@
-package org.mybatis.mybatisGenerator.annotation;
+package org.mybatis.reverseGenerator.annotation;
 
 import java.lang.annotation.*;
 

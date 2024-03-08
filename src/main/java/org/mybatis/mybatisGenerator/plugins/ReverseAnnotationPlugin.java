@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * 逆向辅助注解插件
@@ -29,40 +28,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
         ColumnGeneratorDoc = new FullyQualifiedJavaType("org.mybatis.mybatisGenerator.annotation.ColumnGeneratorDoc"); //$NON-NLS-1$
     }
 
-    public DatabaseMetaData getDatabaseMetaData() {
-        if (this.databaseMetaData == null) {
-            try (Connection connection = getConnection()) {
-                DatabaseMetaData metaData = connection.getMetaData();
-                ResultSet singleIndexResultSet = metaData.getIndexInfo(null, null, "Users", false, false);
-                System.out.println("单列索引信息：");
-
-                while (singleIndexResultSet.next()) {
-                    String indexName = singleIndexResultSet.getString("INDEX_NAME");
-                    String columnName = singleIndexResultSet.getString("COLUMN_NAME");
-                    System.out.println("索引名称：" + indexName + ", 列名：" + columnName);
-                }
-
-                // 获取联合索引信息
-                ResultSet compositeIndexResultSet = metaData.getIndexInfo(null, null, "Users", false, false);
-                System.out.println("联合索引信息：");
-                while (compositeIndexResultSet.next()) {
-                    String indexName = compositeIndexResultSet.getString("INDEX_NAME");
-                    String columnName = compositeIndexResultSet.getString("COLUMN_NAME");
-                    System.out.println("索引名称：" + indexName + ", 列名：" + columnName);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return null;
-    }
-
-    private Connection getConnection() throws SQLException {
-        ConnectionFactory connectionFactory;
-        JDBCConnectionConfiguration jdbcConnectionConfiguration = this.context.getJdbcConnectionConfiguration();
-        connectionFactory = jdbcConnectionConfiguration != null ? new JDBCConnectionFactory(jdbcConnectionConfiguration) : ObjectFactory.createConnectionFactory(this.context);
-        return connectionFactory.getConnection();
-    }
 
     public boolean validate(List<String> warnings) {
         return true;
@@ -98,7 +63,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
                                        IntrospectedTable introspectedTable,
                                        Plugin.ModelClassType modelClassType) {
 
-        getDatabaseMetaData();
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
         boolean isPrimaryKey = primaryKeyColumns.contains(introspectedColumn);
         String format = buildBaseAnnotation(introspectedColumn);
@@ -111,7 +75,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
         format += ")";
         field.addJavaDocLine(format);
         topLevelClass.addImportedType(ColumnGeneratorDoc);
-//            this.databaseMetaData.getIndexInfo()
         return true;
     }
 

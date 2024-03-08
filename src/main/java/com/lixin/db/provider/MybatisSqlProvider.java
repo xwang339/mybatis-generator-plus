@@ -61,9 +61,7 @@ public class MybatisSqlProvider implements SqlProvider {
      * @return
      */
     public String getUpdateStatement(TableSchema tableSchema, Map<String, Object> data) {
-        StringBuilder sql = new StringBuilder();
-        sql.append(SqlKeyword.INSERT_KEYWORD.getDescription()).append(tableSchema.getTableName()).append(PARENTHESES_PRE);
-        return sql.toString();
+        return SqlKeyword.INSERT_KEYWORD.getDescription() + tableSchema.getTableName() + PARENTHESES_PRE;
     }
 
 }
