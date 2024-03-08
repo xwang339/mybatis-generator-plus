@@ -3,7 +3,7 @@ package com.lixin.db.util;
 
 import com.lixin.db.model.DbType;
 import com.lixin.db.model.ModeType;
-import com.lixin.db.provider.MybatisSqlProvider;
+import com.lixin.db.provider.DefaultSqlProvider;
 import com.lixin.db.provider.SqlProvider;
 import com.lixin.db.provider.TableOrFileProvider;
 import com.lixin.db.table.MysqlTableSchema;
@@ -51,7 +51,7 @@ public class CreateUtils {
     public static SqlProvider builderSqlProvider(ModeType modeType) {
         return switch (modeType) {
             case EXCEL, TABLE -> new TableOrFileProvider();
-            case BEAN -> new MybatisSqlProvider();
+            case BEAN -> new DefaultSqlProvider();
             default -> throw new RuntimeException("构造失败");
         };
     }
