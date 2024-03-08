@@ -80,6 +80,11 @@ public class PostgreSqlTableSchema extends TableSchema {
         return null;
     }
 
+    @Override
+    public String getIndexSql() {
+        return null;
+    }
+
 
     public PostgreSqlTableSchema(List<SqlModel> models, String tableName, String doc) {
         super(models, tableName,doc);
