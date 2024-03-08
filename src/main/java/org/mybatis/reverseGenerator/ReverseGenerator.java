@@ -6,6 +6,7 @@ import com.lixin.db.table.IndexModel;
 import com.lixin.db.table.SqlModel;
 import com.lixin.db.table.TableSchema;
 import com.lixin.db.util.CreateUtils;
+import com.mysql.cj.xdevapi.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -77,6 +78,7 @@ public class ReverseGenerator {
             List<SqlModel> sqlModels = convertColumnGeneratorDocs2SqlModel(table.columnGeneratorDocs);
             TableSchema tableSchema = CreateUtils.createTable(dbType, sqlModels, tableGeneratorDoc.name(), tableGeneratorDoc.remark());
             tableSchema.setIndexModels(convertIndexDocs2IndexModel(table.indexGeneratorDoc));
+            tableSchemas.add(tableSchema);
         });
         return tableSchemas;
     }
@@ -144,7 +146,7 @@ public class ReverseGenerator {
 
             TableGeneratorDoc tableGeneratorDoc = beanClass.getAnnotation(TableGeneratorDoc.class);
             if (tableGeneratorDoc != null) {
-                tableMaps.computeIfAbsent(tableGeneratorDoc.name(), (k) -> new Table());
+                tableMaps.computeIfAbsent(tableGeneratorDoc.name(), (k) -> new Table(tableGeneratorDoc));
                 Table table = tableMaps.get(tableGeneratorDoc.name());
                 setColumnGeneratorDocs(beanClass, table);
                 setIndexDoc(beanClass, table);
@@ -154,8 +156,12 @@ public class ReverseGenerator {
 
     private void setIndexDoc(Class<?> beanClass, Table table) {
         IndexGeneratorDocs indexGeneratorDoc = beanClass.getAnnotation(IndexGeneratorDocs.class);
-        IndexGeneratorDoc[] value = indexGeneratorDoc.value();
-        table.getIndexGeneratorDoc().addAll(Arrays.asList(value));
+        if (indexGeneratorDoc != null) {
+            IndexGeneratorDoc[] value = indexGeneratorDoc.value();
+            if (value != null && value.length > 0) {
+                table.getIndexGeneratorDoc().addAll(Arrays.asList(value));
+            }
+        }
     }
 
     private void setColumnGeneratorDocs(Class<?> beanClass, Table table) {
@@ -178,7 +184,8 @@ public class ReverseGenerator {
         List<IndexGeneratorDoc> indexGeneratorDoc;
         List<ColumnGeneratorDoc> columnGeneratorDocs;
 
-        public Table() {
+        public Table(TableGeneratorDoc tableGeneratorDoc) {
+            this.tableGeneratorDoc = tableGeneratorDoc;
             this.indexGeneratorDoc = new ArrayList<>();
             this.columnGeneratorDocs = new ArrayList<>();
         }

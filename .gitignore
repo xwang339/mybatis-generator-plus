@@ -9,7 +9,6 @@ dist/
 server-client
 # Compiled Java class files
 *.class
-
 # Compiled Python bytecode
 *.py[cod]
 *.iml
@@ -24,7 +23,7 @@ server
 tomcat_temp
 # Maven
 target/
-
+src/main/java/org/mybatis/generator/
 # JetBrains IDE
 .idea/
 

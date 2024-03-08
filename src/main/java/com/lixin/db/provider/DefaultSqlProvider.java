@@ -7,7 +7,7 @@ import com.lixin.db.table.TableSchema;
 import java.util.Map;
 
 /**
- * Description: 基于mybatis 实现的sql提供者
+ * Description:
  * Copyright:   Copyright (c)2023
  * Company:     sci
  *
@@ -20,7 +20,7 @@ import java.util.Map;
  * ------------------------------------------------------------------
  * 2023-03-24     张李鑫                     1.0         1.0 Version
  */
-public class MybatisSqlProvider implements SqlProvider {
+public class DefaultSqlProvider implements SqlProvider {
 
     private static final String PARENTHESES_PRE = "(";
     private static final String PARENTHESES_SUFFIX = ")";

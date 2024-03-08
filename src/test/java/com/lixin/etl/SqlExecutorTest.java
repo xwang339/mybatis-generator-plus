@@ -3,7 +3,7 @@ package com.lixin.etl;
 import com.lixin.db.model.DbType;
 import com.lixin.db.model.ModeType;
 import com.lixin.db.model.MysqlColumn;
-import com.lixin.db.provider.MybatisSqlProvider;
+import com.lixin.db.provider.DefaultSqlProvider;
 import com.lixin.db.sql.SqlExecutor;
 import com.lixin.db.table.SqlModel;
 import com.lixin.db.util.CreateUtils;
@@ -59,7 +59,7 @@ public class SqlExecutorTest {
     public void getCreateTableSql() {
         SqlExecutor sqlManager = getSqlmanager();
         long l = System.currentTimeMillis();
-        MybatisSqlProvider mybatisSqlProvider = new MybatisSqlProvider();
+        DefaultSqlProvider defaultSqlProvider = new DefaultSqlProvider();
 
         ArrayList<HashMap<String, Object>> datas = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class SqlExecutorTest {
             datas.add(map);
         }
         List<String> sqls = new ArrayList<>();
-        datas.forEach(map -> sqls.add(mybatisSqlProvider.getInsertStatement(sqlManager.getTableSchema(), map)));
+        datas.forEach(map -> sqls.add(defaultSqlProvider.getInsertStatement(sqlManager.getTableSchema(), map)));
         sqls.forEach(sql -> System.out.println(sql + ";"));
     }
 
