@@ -9,7 +9,7 @@ dist/
 server-client
 # Compiled Java class files
 *.class
-
+org/mybatis/generator/
 # Compiled Python bytecode
 *.py[cod]
 *.iml
