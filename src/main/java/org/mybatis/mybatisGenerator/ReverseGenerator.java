@@ -32,11 +32,11 @@ public class ReverseGenerator {
      * 沿用mybatis的配置文件
      * 根据mybatis生成的饿文件去做逆向
      */
-    private Configuration configuration;
+    private final Configuration configuration;
 
-    private ShellCallback shellCallback;
+    private final ShellCallback shellCallback;
 
-    private List<String> classList;
+    private final List<String> classList;
 
     private final HashMap<TableGeneratorDoc, List<ColumnGeneratorDoc>> annotationHashMap;
 
@@ -58,7 +58,7 @@ public class ReverseGenerator {
         collectMetadata();
         List<TableSchema> tableSchemas = convert(dbType);
         List<String> result = new ArrayList<>();
-        tableSchemas.forEach((tableSchema) -> result.add( new SqlBuilder(tableSchema).getCreateTableAndCommentSql()));
+        tableSchemas.forEach((tableSchema) -> result.add(new SqlBuilder(tableSchema).getCreateTableAndCommentSql()));
         if (writeFiles) {
             //todo
         }
@@ -100,13 +100,14 @@ public class ReverseGenerator {
     private void getClassPath(List<Context> contextsToRun) throws ShellException {
         for (Context context : contextsToRun) {
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = context.getJavaModelGeneratorConfiguration();
-            File directory = shellCallback.getDirectory(javaModelGeneratorConfiguration.getTargetProject(), javaModelGeneratorConfiguration.getTargetPackage());
-            File[] files = directory.listFiles();
-            if (files == null || files.length == 0) {
-                break;
-            }
-            for (File file : files) {
-                classList.add(javaModelGeneratorConfiguration.getTargetPackage() + "." + file.getName().replace(".java", ""));
+            File[] files = shellCallback
+                    .getDirectory(javaModelGeneratorConfiguration.getTargetProject(), javaModelGeneratorConfiguration.getTargetPackage())
+                    .listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    classList.add(javaModelGeneratorConfiguration.getTargetPackage() + "." + file.getName().replace(".java", ""));
+                }
             }
         }
     }
@@ -132,6 +133,4 @@ public class ReverseGenerator {
             }
         }
     }
-
-
 }
