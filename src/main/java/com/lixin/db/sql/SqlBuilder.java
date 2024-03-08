@@ -6,6 +6,9 @@ import com.lixin.db.provider.SqlProvider;
 import com.lixin.db.table.SqlModel;
 import com.lixin.db.table.TableSchema;
 import com.lixin.db.util.CreateUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * Description:
@@ -21,6 +24,10 @@ import com.lixin.db.util.CreateUtils;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
+
+@Data
+@EqualsAndHashCode
+@Accessors(chain = true)
 public class SqlBuilder {
 
     /**
@@ -38,6 +45,8 @@ public class SqlBuilder {
      */
     private SqlProvider sqlProvider;
 
+    public SqlBuilder() {
+    }
 
     /**
      * 获取创建表语句
@@ -65,6 +74,9 @@ public class SqlBuilder {
     public String getUpdateColumnDoc(SqlModel sqlModel) {
         return this.tableSchema.getUpdateColumnDocSql(sqlModel);
     }
+    public String getIndexSql() {
+        return this.tableSchema.getIndexSql();
+    }
 
     /**
      * 更新表备注
@@ -81,7 +93,7 @@ public class SqlBuilder {
      * @return
      */
     public String getCreateTableAndCommentSql() {
-        return buildCreateTableSql() + lineFeed + getCommentSql();
+        return buildCreateTableSql() + lineFeed + getCommentSql()+lineFeed+getIndexSql();
     }
 
     public SqlBuilder(TableSchema tableSchema, ModeType modeType) {
@@ -95,21 +107,5 @@ public class SqlBuilder {
         this.sqlProvider = CreateUtils.builderSqlProvider(ModeType.BEAN);
     }
 
-    public SqlProvider getSqlProvider() {
-        return sqlProvider;
-    }
-
-    public void setSqlProvider(SqlProvider sqlProvider) {
-        this.sqlProvider = sqlProvider;
-    }
-
-
-    public TableSchema getTable() {
-        return tableSchema;
-    }
-
-    public void setTable(TableSchema tableSchema) {
-        this.tableSchema = tableSchema;
-    }
 
 }

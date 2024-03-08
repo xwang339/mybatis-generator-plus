@@ -1,7 +1,5 @@
 package org.mybatis.mybatisGenerator;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Description:
  * Copyright:   Copyright (c)2024

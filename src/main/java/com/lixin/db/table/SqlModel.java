@@ -2,6 +2,9 @@ package com.lixin.db.table;
 
 import com.lixin.db.model.MysqlColumn;
 import com.lixin.db.model.PrimaryKey;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -19,6 +22,9 @@ import java.util.List;
  * ------------------------------------------------------------------
  * 2023-03-16     张李鑫                     1.0         1.0 Version
  */
+@Data
+@EqualsAndHashCode
+@Accessors(chain = true)
 public class SqlModel {
 
     /**
@@ -61,49 +67,11 @@ public class SqlModel {
 
     }
 
-    public String getColumn() {
-        return column;
-    }
-
-    public void setColumn(String column) {
-        this.column = column;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public MysqlColumn getType() {
-        return type;
-    }
 
     public void setType(int type) {
         this.type = MysqlColumn.enumMap.get(type);
     }
 
-    public Integer getLength() {
-        return length;
-    }
-
-    public void setLength(Integer length) {
-        this.length = length;
-    }
-
-    public boolean isNull() {
-        return isNull;
-    }
-
-    public void setNull(boolean aNull) {
-        isNull = aNull;
-    }
-
-    public PrimaryKey getPrimaryKey() {
-        return primaryKey;
-    }
 
     /**
      * 如果设置了主键必须设置主键不是null

@@ -1,5 +1,7 @@
 package com.lixin.db.model;
 
+import lombok.Getter;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import java.util.Map;
  * ------------------------------------------------------------------
  * 2023-03-23     张李鑫                     1.0         1.0 Version
  */
+@Getter
 public enum MysqlColumn {
 
     TEXT("text",  -1, false),
@@ -52,15 +55,4 @@ public enum MysqlColumn {
         return statusMap;
     }
 
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public boolean isHasSuffix() {
-        return hasSuffix;
-    }
 }

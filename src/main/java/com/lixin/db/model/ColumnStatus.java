@@ -1,5 +1,7 @@
 package com.lixin.db.model;
 
+import lombok.Getter;
+
 /**
  * Description:
  * Copyright:   Copyright (c)2023
@@ -14,6 +16,7 @@ package com.lixin.db.model;
  * ------------------------------------------------------------------
  * 2023-03-24     张李鑫                     1.0         1.0 Version
  */
+@Getter
 public enum ColumnStatus {
     ISNULL(" DEFAULT NULL ", (byte) 1),
     NOTNULL(" NOT NULL ", (byte) 0);
@@ -25,11 +28,5 @@ public enum ColumnStatus {
         this.description = description;
         this.value = value;
     }
-    public String getDescription() {
-        return description;
-    }
 
-    public byte getValue() {
-        return value;
-    }
 }
