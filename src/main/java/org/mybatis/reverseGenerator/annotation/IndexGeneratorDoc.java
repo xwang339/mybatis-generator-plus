@@ -1,7 +1,7 @@
 package org.mybatis.reverseGenerator.annotation;
 
 
-import com.lixin.db.model.IndexMethod;
+import com.lixin.db.model.IndexUnique;
 import com.lixin.db.model.IndexType;
 
 import java.lang.annotation.*;
@@ -15,19 +15,17 @@ import java.lang.annotation.*;
 @Repeatable(IndexGeneratorDocs.class)//指定了IndexGeneratorDocs作为容器注解。
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IndexGeneratorDoc {
-    String indexName() default "";
+    String keyName() default "";
 
-    IndexType indexType() default IndexType.normal;
 
-    IndexMethod indexMethod() default IndexMethod.BTREE;
+    IndexType indexType() default IndexType.BTREE;
 
-//    List<String> columns() ;
 
-    //    private String indexName;
-    //    private IndexType indexType;
-    //    private IndexMethod indexMethod;
-    //    private List<String>columns;
-    //    private String remark;
+    IndexUnique IndexUnique() default IndexUnique.isUnique;
+
+    String remark() default "";
+
+    String column() default "";
 
 
 }

@@ -1,7 +1,7 @@
 package com.lixin.db.table;
 
-import com.lixin.db.model.IndexMethod;
 import com.lixin.db.model.IndexType;
+import com.lixin.db.model.IndexUnique;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -30,7 +30,7 @@ import java.util.List;
 public class IndexModel {
     private String indexName;
     private IndexType indexType;
-    private IndexMethod indexMethod;
+    private IndexUnique indexUnique;
     private List<String>columns;
     private String remark;
 
@@ -38,10 +38,10 @@ public class IndexModel {
     public IndexModel() {
     }
 
-    public IndexModel(String indexName, IndexType indexType, IndexMethod indexMethod, List<String> columns, String remark) {
+    public IndexModel(String indexName, IndexType indexType,IndexUnique indexUnique,  List<String> columns, String remark) {
         this.indexName = indexName;
         this.indexType = indexType;
-        this.indexMethod = indexMethod;
+        this.indexUnique = indexUnique;
         this.columns = columns;
         this.remark = remark;
     }
