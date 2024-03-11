@@ -59,6 +59,7 @@ public class ReverseGenerator {
         getClassPath(configuration.getContexts());
         collectMetadata();
         List<TableSchema> tableSchemas = convert(dbType);
+
         List<String> result = new ArrayList<>();
         SqlExecutor sqlExecutor = new SqlExecutor();
         tableSchemas.forEach((tableSchema) -> result.add(execute ? sqlExecutor.getTableDDLAndExecute(tableSchema) : sqlExecutor.getTableDDL(tableSchema)));
@@ -95,7 +96,8 @@ public class ReverseGenerator {
         if (indexGeneratorDoc == null) {
             return null;
         }
-        //todo
+
+        System.out.println(indexGeneratorDoc);
         return new IndexModel();
     }
 
