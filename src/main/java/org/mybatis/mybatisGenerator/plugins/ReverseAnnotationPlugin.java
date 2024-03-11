@@ -23,7 +23,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
     private final FullyQualifiedJavaType TableGeneratorDocAnno;
     private final FullyQualifiedJavaType ColumnGeneratorDocAnno;
 
-    private DatabaseMetaData databaseMetaData;
 
     public ReverseAnnotationPlugin() {
         TableGeneratorDocAnno = new FullyQualifiedJavaType(TableGeneratorDoc.class.getName());

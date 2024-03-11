@@ -16,6 +16,7 @@ import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.DefaultShellCallback;
+import org.mybatis.mybatisGenerator.utils.FileUtils;
 import org.mybatis.reverseGenerator.annotation.ColumnGeneratorDoc;
 import org.mybatis.reverseGenerator.annotation.IndexGeneratorDoc;
 import org.mybatis.reverseGenerator.annotation.IndexGeneratorDocs;
@@ -54,7 +55,7 @@ public class ReverseGenerator {
     }
 
 
-    public List<String> reverse(boolean writeFiles, DbType dbType, boolean execute) throws Exception {
+    public List<String> reverse(boolean writeFiles, DbType dbType, boolean execute,String filePath,String fileName) throws Exception {
         getClassPath(configuration.getContexts());
         collectMetadata();
         List<TableSchema> tableSchemas = convert(dbType);
@@ -62,7 +63,11 @@ public class ReverseGenerator {
         SqlExecutor sqlExecutor = new SqlExecutor();
         tableSchemas.forEach((tableSchema) -> result.add(execute ? sqlExecutor.getTableDDLAndExecute(tableSchema) : sqlExecutor.getTableDDL(tableSchema)));
         if (writeFiles) {
-            //todo
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String sql : result) {
+                stringBuilder.append(sql).append("\n");
+            }
+            FileUtils.writeFile(new File(filePath+fileName),stringBuilder.toString(),null);
         }
         return result;
     }

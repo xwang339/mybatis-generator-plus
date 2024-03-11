@@ -61,7 +61,7 @@ public class MysqlTableSchema extends TableSchema {
         sql.append(buildColumnDefinitions(models));
         //如果有主键拼接主键字符串，没有的话删除最后一个逗号
         if (primaryKey != null) {
-            sql.append(String.format(PRIMARY_KEY_STR, getPrimaryKey().getColumn()));
+            sql.append(String.format(PRIMARY_KEY_STR, primaryKey.getColumn()));
         } else {
             sql.delete(sql.length() - LINE_FEED_HAS_NEXT.length(), sql.length() - 1);
         }
@@ -108,7 +108,7 @@ public class MysqlTableSchema extends TableSchema {
 
     /**
      * 拼接comment
-     *
+     * 在mysql里好像不能单独的构造备注 必须带上字段以及类型
      * @return
      */
     public String builderCommentLine(SqlModel model) {
@@ -137,6 +137,10 @@ public class MysqlTableSchema extends TableSchema {
 
     @Override
     public String getIndexSql() {
+        List<IndexModel> indexModels = getIndexModels();
+        if (indexModels==null||indexModels.isEmpty()){
+            return "";
+        }
         return null;
     }
 
