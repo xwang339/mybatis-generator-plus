@@ -18,27 +18,13 @@ public abstract class  IndexProvider {
 
     /**
      * 提供alter 的方式生成sql 语句
-     * @param indexModel
-     * @param indexType
-     * @param indexMethod
      * @return
      */
     abstract String createUnique(IndexForm form);
     abstract String createNormal(IndexForm form);
     abstract String createFullText(IndexForm form);
-    abstract String createFullSpatial(IndexForm form);
+    abstract String createSpatial(IndexForm form);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public abstract String createSql(IndexForm form);
 }

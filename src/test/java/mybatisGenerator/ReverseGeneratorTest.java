@@ -23,9 +23,9 @@ public class ReverseGeneratorTest {
 
         try {
             String filePath="/Users/user/Documents/GitHub/mybatis-generator-plus/";
-            String fileName="db.sql";
+            String fileName="db1.sql";
             ReverseGenerator myBatisGenerator = new ReverseGenerator(config);
-            List<String> reverse = myBatisGenerator.reverse(false,
+            List<String> reverse = myBatisGenerator.reverse(true,
                     DbType.MYSQL,
                     false,
                     filePath,fileName);

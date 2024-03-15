@@ -39,7 +39,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
 
     private String indexSql = "show  index from %s";
 
-    private DatabaseMetaData databaseMetaData;
 
 
     static class IndexInfo {
@@ -224,12 +223,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
                 introspectedColumn.isIdentity(),
                 introspectedColumn.getRemarks()
         );
-    }
-
-    public static void main(String[] args) {
-        String list = "[username]";
-
-
     }
 
 }

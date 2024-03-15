@@ -13,14 +13,15 @@ import java.util.HashMap;
 @Getter
 public enum IndexType {
 
-    UNIQUE("UNIQUE", (byte) 3),
-    NORMAL("NORMAL", (byte) 1),
-    NULL("null", (byte) 0),
-    fulltext("FULLTEXT", (byte) 4),
-    spatial("SPATIAL", (byte) 5);
+    UNIQUE("UNIQUE", (byte) 3,"UNIQUE"),
+    NORMAL("NORMAL", (byte) 1,""),
+    NULL("null", (byte) 0,""),
+    FULLTEXT("FULLTEXT", (byte) 4,"FULLTEXT"),
+    SPATIAL("SPATIAL", (byte) 5,"SPATIAL");
 
 
     private final String description;
+    private final String pre;
     private final byte value;
 
     public static HashMap<String, IndexType> map;
@@ -40,8 +41,9 @@ public enum IndexType {
     }
 
 
-    IndexType(String description, byte value) {
+    IndexType(String description, byte value,String pre) {
         this.description = description;
         this.value = value;
+        this.pre=pre;
     }
 }

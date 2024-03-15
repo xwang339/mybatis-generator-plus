@@ -9,14 +9,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class IndexForm {
     public IndexModel indexModel;
-    public IndexType indexType;
-    public IndexMethod indexMethod;
     public String tableName;
 
-    public IndexForm(IndexModel indexModel, IndexType indexType, IndexMethod indexMethod, String tableName) {
+    public IndexForm(IndexModel indexModel , String tableName) {
         this.indexModel = indexModel;
-        this.indexType = indexType;
-        this.indexMethod = indexMethod;
         this.tableName = tableName;
     }
 }

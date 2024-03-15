@@ -66,7 +66,7 @@ public class ReverseGenerator {
         if (writeFiles) {
             StringBuilder stringBuilder = new StringBuilder();
             for (String sql : result) {
-                stringBuilder.append(sql).append("\n");
+                stringBuilder.append(sql).append("\n\n\n");
             }
             FileUtils.writeFile(new File(filePath+fileName),stringBuilder.toString(),null);
         }
