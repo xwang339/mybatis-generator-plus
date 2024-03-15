@@ -1,12 +1,16 @@
 package com.lixin.db.table;
 
 
-
+import com.lixin.db.index.IndexForm;
+import com.lixin.db.index.IndexModel;
+import com.lixin.db.index.IndexProvider;
+import com.lixin.db.index.MysqlIndexProvider;
 import org.apache.commons.lang3.StringUtils;
 import com.lixin.db.keyword.MysqlKeyword;
 import com.lixin.db.model.ColumnStatus;
 import com.lixin.db.model.MysqlColumn;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,12 +37,13 @@ public class MysqlTableSchema extends TableSchema {
 
     public MysqlTableSchema(List<SqlModel> models, String tableName, String tableDoc) {
         super(models, tableName, tableDoc);
+        setIndexProvider(new MysqlIndexProvider());
         //设置关键字
         this.setKeywords(MysqlKeyword.toSet());
     }
 
     public MysqlTableSchema(List<SqlModel> models, String tableName) {
-        super(models, tableName);
+        this(models, tableName, "");
     }
 
     /**
@@ -61,7 +66,7 @@ public class MysqlTableSchema extends TableSchema {
         sql.append(buildColumnDefinitions(models));
         //如果有主键拼接主键字符串，没有的话删除最后一个逗号
         if (primaryKey != null) {
-            sql.append(String.format(PRIMARY_KEY_STR, getPrimaryKey().getColumn()));
+            sql.append(String.format(PRIMARY_KEY_STR, primaryKey.getColumn()));
         } else {
             sql.delete(sql.length() - LINE_FEED_HAS_NEXT.length(), sql.length() - 1);
         }
@@ -72,6 +77,7 @@ public class MysqlTableSchema extends TableSchema {
 
     /**
      * 行数据拼接
+     *
      * @param models {@link SqlModel }
      * @return
      */
@@ -108,6 +114,7 @@ public class MysqlTableSchema extends TableSchema {
 
     /**
      * 拼接comment
+     * 在mysql里好像不能单独的构造备注 必须带上字段以及类型
      *
      * @return
      */
@@ -137,7 +144,14 @@ public class MysqlTableSchema extends TableSchema {
 
     @Override
     public String getIndexSql() {
-        return null;
+        ArrayList<String> res = new ArrayList<>();
+        List<IndexModel> indexModels = getIndexModels();
+        if (indexModels != null && !indexModels.isEmpty()) {
+            for (IndexModel indexModel : indexModels) {
+                res.add(this.getIndexProvider().createSql(new IndexForm(indexModel, this.getTableName())));
+            }
+        }
+        return res.isEmpty() ? "" : String.join("\n", res);
     }
 
 

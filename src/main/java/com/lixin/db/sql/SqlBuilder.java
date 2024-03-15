@@ -74,6 +74,7 @@ public class SqlBuilder {
     public String getUpdateColumnDoc(SqlModel sqlModel) {
         return this.tableSchema.getUpdateColumnDocSql(sqlModel);
     }
+
     public String getIndexSql() {
         return this.tableSchema.getIndexSql();
     }
@@ -93,7 +94,8 @@ public class SqlBuilder {
      * @return
      */
     public String getCreateTableAndCommentSql() {
-        return buildCreateTableSql() + lineFeed + getCommentSql()+lineFeed+getIndexSql();
+        String pre = "#  " + this.getTableSchema().getTableDesc() + "\n";
+        return pre + buildCreateTableSql() + lineFeed + getCommentSql() + lineFeed + getIndexSql();
     }
 
     public SqlBuilder(TableSchema tableSchema, ModeType modeType) {

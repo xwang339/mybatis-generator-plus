@@ -32,7 +32,9 @@ public enum MysqlColumn {
     TINYINT("tinyint",  -6, false),
     BIT("tinyint(%s)",  -7, true),
     BIGINT("bigint",  -5, false),
+    GEOMETRY("geometry",  -2, false),
     VARCHAR("VARCHAR(%s)",  12, true);
+
 
 
     private final String suffix;

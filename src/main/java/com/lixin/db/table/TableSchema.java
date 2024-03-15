@@ -1,5 +1,7 @@
 package com.lixin.db.table;
 
+import com.lixin.db.index.IndexModel;
+import com.lixin.db.index.IndexProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -64,6 +66,8 @@ public abstract class TableSchema {
     private HashSet<String> modelSet;
 
     private List<IndexModel>indexModels;
+
+    private IndexProvider indexProvider;
 
     public TableSchema(List<SqlModel> models, String tableName) {
         this(models, tableName, "");
@@ -145,4 +149,6 @@ public abstract class TableSchema {
     public abstract String getUpdateColumnDocSql(SqlModel sqlModel);
 
     public abstract String getIndexSql();
+
+
 }

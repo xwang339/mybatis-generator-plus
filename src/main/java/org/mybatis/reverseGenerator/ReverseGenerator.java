@@ -2,11 +2,10 @@ package org.mybatis.reverseGenerator;
 
 import com.lixin.db.model.DbType;
 import com.lixin.db.sql.SqlExecutor;
-import com.lixin.db.table.IndexModel;
+import com.lixin.db.index.IndexModel;
 import com.lixin.db.table.SqlModel;
 import com.lixin.db.table.TableSchema;
 import com.lixin.db.util.CreateUtils;
-import com.mysql.cj.xdevapi.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,6 +16,7 @@ import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.DefaultShellCallback;
+import org.mybatis.mybatisGenerator.utils.FileUtils;
 import org.mybatis.reverseGenerator.annotation.ColumnGeneratorDoc;
 import org.mybatis.reverseGenerator.annotation.IndexGeneratorDoc;
 import org.mybatis.reverseGenerator.annotation.IndexGeneratorDocs;
@@ -55,15 +55,20 @@ public class ReverseGenerator {
     }
 
 
-    public List<String> reverse(boolean writeFiles, DbType dbType, boolean execute) throws Exception {
+    public List<String> reverse(boolean writeFiles, DbType dbType, boolean execute,String filePath,String fileName) throws Exception {
         getClassPath(configuration.getContexts());
         collectMetadata();
         List<TableSchema> tableSchemas = convert(dbType);
+
         List<String> result = new ArrayList<>();
         SqlExecutor sqlExecutor = new SqlExecutor();
         tableSchemas.forEach((tableSchema) -> result.add(execute ? sqlExecutor.getTableDDLAndExecute(tableSchema) : sqlExecutor.getTableDDL(tableSchema)));
         if (writeFiles) {
-            //todo
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String sql : result) {
+                stringBuilder.append(sql).append("\n\n\n");
+            }
+            FileUtils.writeFile(new File(filePath+fileName),stringBuilder.toString(),null);
         }
         return result;
     }
@@ -91,8 +96,10 @@ public class ReverseGenerator {
         if (indexGeneratorDoc == null) {
             return null;
         }
-        //todo
-        return new IndexModel();
+
+
+        System.out.println(indexGeneratorDoc);
+        return new IndexModel(indexGeneratorDoc);
     }
 
     public List<SqlModel> convertColumnGeneratorDocs2SqlModel(List<ColumnGeneratorDoc> columnGeneratorDocs) {
@@ -142,17 +149,20 @@ public class ReverseGenerator {
      */
     private void collectMetadata() throws ClassNotFoundException {
         for (String path : classList) {
-            Class<?> beanClass = Class.forName(path);
-
-            TableGeneratorDoc tableGeneratorDoc = beanClass.getAnnotation(TableGeneratorDoc.class);
-            if (tableGeneratorDoc != null) {
-                tableMaps.computeIfAbsent(tableGeneratorDoc.name(), (k) -> new Table(tableGeneratorDoc));
-                Table table = tableMaps.get(tableGeneratorDoc.name());
-                setColumnGeneratorDocs(beanClass, table);
-                setIndexDoc(beanClass, table);
-            }
+            collectAnnotation(Class.forName(path));
         }
     }
+
+    private void collectAnnotation(Class<?> beanClass) {
+        TableGeneratorDoc tableGeneratorDoc = beanClass.getAnnotation(TableGeneratorDoc.class);
+        if (tableGeneratorDoc != null) {
+            tableMaps.computeIfAbsent(tableGeneratorDoc.name(), (k) -> new Table(tableGeneratorDoc));
+            Table table = tableMaps.get(tableGeneratorDoc.name());
+            setColumnGeneratorDocs(beanClass, table);
+            setIndexDoc(beanClass, table);
+        }
+    }
+
 
     private void setIndexDoc(Class<?> beanClass, Table table) {
         IndexGeneratorDocs indexGeneratorDoc = beanClass.getAnnotation(IndexGeneratorDocs.class);
@@ -165,12 +175,9 @@ public class ReverseGenerator {
     }
 
     private void setColumnGeneratorDocs(Class<?> beanClass, Table table) {
-        Arrays.stream(beanClass.getDeclaredFields()).forEach((field) -> {
-            ColumnGeneratorDoc annotations = field.getAnnotation(ColumnGeneratorDoc.class);
-            if (annotations != null) {
-                table.getColumnGeneratorDocs().add(annotations);
-            }
-        });
+        Arrays.stream(beanClass.getDeclaredFields())
+                .filter((field -> field.getAnnotation(ColumnGeneratorDoc.class) != null))
+                .forEach((field) -> table.getColumnGeneratorDocs().add(field.getAnnotation(ColumnGeneratorDoc.class)));
     }
 
     /**

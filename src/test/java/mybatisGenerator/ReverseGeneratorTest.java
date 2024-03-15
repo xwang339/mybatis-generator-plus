@@ -22,8 +22,13 @@ public class ReverseGeneratorTest {
         Configuration config = cp.parseConfiguration(this.getClass().getClassLoader().getResourceAsStream("generatorConfig.xml"));
 
         try {
+            String filePath="/Users/user/Documents/GitHub/mybatis-generator-plus/";
+            String fileName="db1.sql";
             ReverseGenerator myBatisGenerator = new ReverseGenerator(config);
-            List<String> reverse = myBatisGenerator.reverse(true, DbType.MYSQL,false);
+            List<String> reverse = myBatisGenerator.reverse(true,
+                    DbType.MYSQL,
+                    false,
+                    filePath,fileName);
             reverse.forEach(System.out::println);
             if (!warnings.isEmpty()) {
                 for (String warning : warnings) {
