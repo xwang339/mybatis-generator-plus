@@ -1,12 +1,12 @@
 package org.mybatis.mybatisGenerator.plugins;
 
-import com.lixin.db.model.IndexType;
-import com.lixin.db.model.IndexUnique;
-import com.lixin.db.table.IndexModel;
-import com.mysql.cj.xdevapi.JsonArray;
-import com.mysql.cj.xdevapi.JsonString;
+import com.lixin.db.index.IndexMethod;
+import com.lixin.db.index.IndexType;
+import com.lixin.db.index.IndexModel;
 import org.mybatis.generator.api.*;
-import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.api.dom.java.Field;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.JDBCConnectionConfiguration;
 import org.mybatis.generator.internal.JDBCConnectionFactory;
 import org.mybatis.generator.internal.ObjectFactory;
@@ -15,12 +15,13 @@ import org.mybatis.reverseGenerator.annotation.IndexGeneratorDoc;
 import org.mybatis.reverseGenerator.annotation.IndexGeneratorDocs;
 import org.mybatis.reverseGenerator.annotation.TableGeneratorDoc;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static java.sql.DriverManager.getConnection;
 
 
 /**
@@ -28,17 +29,13 @@ import static java.sql.DriverManager.getConnection;
  * todo:索引信息生成还没做
  * 目前这个类 只针对innodb这个引擎 做了一些小部分功能的实现
  */
-@IndexGeneratorDocs({
-        @IndexGeneratorDoc(keyName = "hash_userName", indexType = IndexType.BTREE, IndexUnique = IndexUnique.isUnique, remark = "", column = ""),
-        @IndexGeneratorDoc()}
-)
 public class ReverseAnnotationPlugin extends PluginAdapter {
     private final FullyQualifiedJavaType TableGeneratorDocAnno;
     private final FullyQualifiedJavaType ColumnGeneratorDocAnno;
     private final FullyQualifiedJavaType indexGeneratorDocs;
     private final FullyQualifiedJavaType indexGeneratorDoc;
     private final FullyQualifiedJavaType indexType;
-    private final FullyQualifiedJavaType indexUnique;
+    private final FullyQualifiedJavaType indexMethod;
 
     private String indexSql = "show  index from %s";
 
@@ -66,7 +63,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
         indexGeneratorDoc = new FullyQualifiedJavaType(IndexGeneratorDoc.class.getName());
         ColumnGeneratorDocAnno = new FullyQualifiedJavaType(ColumnGeneratorDoc.class.getName()); //$NON-NLS-1$
         indexType = new FullyQualifiedJavaType(IndexType.class.getName()); //$NON-NLS-1$
-        indexUnique = new FullyQualifiedJavaType(IndexUnique.class.getName()); //$NON-NLS-1$
+        indexMethod = new FullyQualifiedJavaType(IndexMethod.class.getName()); //$NON-NLS-1$
     }
 
 
@@ -96,7 +93,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
             IndexModel oldModel = indexModelHashMap.get(keyName);
             List<String> columnNames = indexModelHashMap.containsKey(keyName) ? oldModel.getColumns() : new ArrayList<>();
             columnNames.add(columnName);
-            indexModelHashMap.computeIfAbsent(keyName, (k) -> new IndexModel(keyName, IndexType.getIndexType(indexType), IndexUnique.from(unique), columnNames, comment));
+            indexModelHashMap.computeIfAbsent(keyName, (k) -> new IndexModel(keyName, indexType, unique, columnNames, comment));
         }
     }
 
@@ -133,7 +130,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
         if (!docLine.isEmpty()) {
             topLevelClass.addImportedType(indexGeneratorDocs);
             topLevelClass.addImportedType(indexType);
-            topLevelClass.addImportedType(indexUnique);
+            topLevelClass.addImportedType(indexMethod);
             topLevelClass.addImportedType(indexGeneratorDoc);
             topLevelClass.addJavaDocLine(docLine);
         }
@@ -148,13 +145,13 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
             String suffix = ")";
             indexes.forEach((k, v) -> {
                 IndexType indexType = v.getIndexType();
-                IndexUnique indexUnique = v.getIndexUnique();
+                IndexMethod indexMethod = v.getIndexMethod();
                 String childAnno =
-                        "@IndexGeneratorDoc(keyName = \"" + k + "\", " +
-                                "indexType = IndexType." + indexType + ", " +
-                                "IndexUnique = IndexUnique." + indexUnique +
-                                ",remark = \""+v.getRemark()+"\"" +
-                                ",column = \""+v.getColumns().toString()+"\" )";
+                        "@IndexGeneratorDoc(keyName = \"" + k + "\"" +
+                                ",indexType = IndexType." + indexType +
+                                ",indexMethod = IndexMethod." + indexMethod +
+                                ",remark = \"" + v.getRemark() + "\"" +
+                                ",column = \"" + v.getColumns().toString() + "\" )";
 
                 stringBuilder.append(space).append(childAnno).append(LINE_FEED_HAS_NEXT);
             });
@@ -230,7 +227,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
     }
 
     public static void main(String[] args) {
-        String list="[username]";
+        String list = "[username]";
 
 
     }

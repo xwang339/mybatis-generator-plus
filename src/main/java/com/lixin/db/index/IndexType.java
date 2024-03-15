@@ -1,4 +1,4 @@
-package com.lixin.db.model;
+package com.lixin.db.index;
 
 import lombok.Getter;
 
@@ -8,13 +8,14 @@ import java.util.HashMap;
  * 索引类型枚举
  * //show  index from tables;
  * 根据这个sql语句来总结的
- * 在结果集观察来看  mysql是这样定义索引类型的
+ *
  */
 @Getter
 public enum IndexType {
 
-    BTREE("BTREE", (byte) 1),
-    HASH("HASH", (byte) 2),
+    UNIQUE("UNIQUE", (byte) 3),
+    NORMAL("NORMAL", (byte) 1),
+    NULL("null", (byte) 0),
     fulltext("FULLTEXT", (byte) 4),
     spatial("SPATIAL", (byte) 5);
 

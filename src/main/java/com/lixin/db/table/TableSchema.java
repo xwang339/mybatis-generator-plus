@@ -1,5 +1,6 @@
 package com.lixin.db.table;
 
+import com.lixin.db.index.IndexModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

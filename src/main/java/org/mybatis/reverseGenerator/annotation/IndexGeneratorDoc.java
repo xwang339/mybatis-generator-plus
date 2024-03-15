@@ -1,8 +1,8 @@
 package org.mybatis.reverseGenerator.annotation;
 
 
-import com.lixin.db.model.IndexUnique;
-import com.lixin.db.model.IndexType;
+import com.lixin.db.index.IndexMethod;
+import com.lixin.db.index.IndexType;
 
 import java.lang.annotation.*;
 
@@ -18,10 +18,8 @@ public @interface IndexGeneratorDoc {
     String keyName() default "";
 
 
-    IndexType indexType() default IndexType.BTREE;
-
-
-    IndexUnique IndexUnique() default IndexUnique.isUnique;
+    IndexType indexType() default IndexType.NULL;
+    IndexMethod indexMethod() default IndexMethod.NULL;
 
     String remark() default "";
 

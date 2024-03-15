@@ -2,6 +2,7 @@ package com.lixin.db.table;
 
 
 
+import com.lixin.db.index.IndexModel;
 import org.apache.commons.lang3.StringUtils;
 import com.lixin.db.keyword.MysqlKeyword;
 import com.lixin.db.model.ColumnStatus;

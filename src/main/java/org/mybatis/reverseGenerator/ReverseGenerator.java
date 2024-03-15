@@ -2,7 +2,7 @@ package org.mybatis.reverseGenerator;
 
 import com.lixin.db.model.DbType;
 import com.lixin.db.sql.SqlExecutor;
-import com.lixin.db.table.IndexModel;
+import com.lixin.db.index.IndexModel;
 import com.lixin.db.table.SqlModel;
 import com.lixin.db.table.TableSchema;
 import com.lixin.db.util.CreateUtils;
@@ -97,8 +97,9 @@ public class ReverseGenerator {
             return null;
         }
 
+
         System.out.println(indexGeneratorDoc);
-        return new IndexModel();
+        return new IndexModel(indexGeneratorDoc);
     }
 
     public List<SqlModel> convertColumnGeneratorDocs2SqlModel(List<ColumnGeneratorDoc> columnGeneratorDocs) {
