@@ -24,6 +24,7 @@ import org.mybatis.reverseGenerator.annotation.TableGeneratorDoc;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
@@ -89,7 +90,7 @@ public class ReverseGenerator {
     }
 
     public List<IndexModel> convertIndexDocs2IndexModel(List<IndexGeneratorDoc> indexGeneratorDocs) {
-        return indexGeneratorDocs.stream().map(this::buildIndexModel).filter((Objects::nonNull)).toList();
+        return indexGeneratorDocs.stream().map(this::buildIndexModel).filter((Objects::nonNull)).collect(Collectors.toList());
     }
 
     private IndexModel buildIndexModel(IndexGeneratorDoc indexGeneratorDoc) {
@@ -103,7 +104,7 @@ public class ReverseGenerator {
     }
 
     public List<SqlModel> convertColumnGeneratorDocs2SqlModel(List<ColumnGeneratorDoc> columnGeneratorDocs) {
-        return columnGeneratorDocs.stream().map(this::buildSqlModel).filter((Objects::nonNull)).toList();
+        return columnGeneratorDocs.stream().map(this::buildSqlModel).filter((Objects::nonNull)).collect(Collectors.toList());
     }
 
     public SqlModel buildSqlModel(ColumnGeneratorDoc column) {

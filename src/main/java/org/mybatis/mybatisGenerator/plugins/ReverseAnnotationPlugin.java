@@ -40,7 +40,6 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
     private String indexSql = "show  index from %s";
 
 
-
     static class IndexInfo {
         String columnName;
         String indexType;
@@ -142,23 +141,23 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
             String LINE_FEED_HAS_NEXT = ",\n";
             StringBuilder stringBuilder = new StringBuilder(preFix);
             String suffix = ")";
-            indexes.forEach((k, v) -> {
-                IndexType indexType = v.getIndexType();
-                IndexMethod indexMethod = v.getIndexMethod();
-                String childAnno =
-                        "@IndexGeneratorDoc(keyName = \"" + k + "\"" +
-                                ",indexType = IndexType." + indexType +
-                                ",indexMethod = IndexMethod." + indexMethod +
-                                ",remark = \"" + v.getRemark() + "\"" +
-                                ",column = \"" + v.getColumns().toString() + "\" )";
-
-                stringBuilder.append(space).append(childAnno).append(LINE_FEED_HAS_NEXT);
-            });
+            indexes.forEach((k, v) -> stringBuilder.append(space).append(buildAnno(k,v)).append(LINE_FEED_HAS_NEXT));
             stringBuilder.delete(stringBuilder.length() - LINE_FEED_HAS_NEXT.length(), stringBuilder.length() - 1).append("}");
             return stringBuilder.append(suffix).toString();
         }
         return "";
     }
+
+    private String buildAnno(String k, IndexModel v) {
+        IndexType indexType = v.getIndexType();
+        IndexMethod indexMethod = v.getIndexMethod();
+        return "@IndexGeneratorDoc(keyName = \"" + k + "\"" +
+                        ",indexType = IndexType." + indexType +
+                        ",indexMethod = IndexMethod." + indexMethod +
+                        ",remark = \"" + v.getRemark() + "\"" +
+                        ",column = \"" + v.getColumns().toString() + "\" )";
+    }
+
 
     private void addTableGeneratorDocAnno(TopLevelClass topLevelClass, String docLine) {
         topLevelClass.addImportedType(TableGeneratorDocAnno);
@@ -166,8 +165,7 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
     }
 
     @Override
-    public boolean modelRecordWithBLOBsClassGenerated(
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean modelRecordWithBLOBsClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String annotation = "@TableGeneratorDoc(remark = \"%s\",name = \"%s\")";
         addTableGeneratorDocAnno(topLevelClass, String.format(annotation, introspectedTable.getRemarks(), introspectedTable.getFullyQualifiedTable()));
         return true;
@@ -176,9 +174,11 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
 
     @Override
     public boolean modelFieldGenerated(Field field,
-                                       TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
+                                       TopLevelClass topLevelClass,
+                                       IntrospectedColumn introspectedColumn,
                                        IntrospectedTable introspectedTable,
                                        Plugin.ModelClassType modelClassType) {
+
 
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
         boolean isPrimaryKey = primaryKeyColumns.contains(introspectedColumn);
@@ -202,7 +202,8 @@ public class ReverseAnnotationPlugin extends PluginAdapter {
      * @return
      */
     private static String buildBaseAnnotation(IntrospectedColumn introspectedColumn) {
-        String annotation = "@ColumnGeneratorDoc(typeName = \"%s\"," +
+        String annotation = "@ColumnGeneratorDoc(" +
+                "typeName = \"%s\"," +
                 "name = \"%s\", " +
                 "jdbcType = %d, " +
                 "isNull = %b, " +
